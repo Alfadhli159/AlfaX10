@@ -80,8 +80,12 @@ function initTestimonialSlider() {
         // Calculate scroll position
         const slideWidth = slides[0].offsetWidth;
         const scrollAmount = currentSlide * slideWidth;
+        
+        // Check if RTL mode is active
+        const isRTL = document.documentElement.dir === 'rtl';
+        
         slider.scrollTo({
-            left: scrollAmount,
+            left: isRTL ? -scrollAmount : scrollAmount,
             behavior: 'smooth'
         });
         
@@ -767,8 +771,22 @@ function initLanguageSwitcher() {
         htmlElement.setAttribute('lang', lang);
         htmlElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
         
-        // Update toggle button text
+        // Update toggle button text (ensure correct order)
         langToggle.textContent = lang === 'en' ? 'EN | AR' : 'AR | EN';
+        
+        // Fix mobile menu position for RTL
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            if (navLinks.classList.contains('active')) {
+                // If menu is currently active, reset its position before changing direction
+                navLinks.classList.remove('active');
+                setTimeout(() => {
+                    if (document.getElementById('menu-toggle').classList.contains('active')) {
+                        navLinks.classList.add('active');
+                    }
+                }, 10);
+            }
+        }
         
         try {
             // Update all translatable elements

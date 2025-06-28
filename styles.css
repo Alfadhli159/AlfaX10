@@ -861,6 +861,11 @@ html[dir="rtl"] body {
     text-align: right;
 }
 
+/* Reverse header layout for RTL */
+html[dir="rtl"] #header .container {
+    flex-direction: row-reverse;
+}
+
 html[dir="rtl"] .nav-links,
 html[dir="rtl"] .hero-cta,
 html[dir="rtl"] .about-stats,
@@ -1243,8 +1248,38 @@ html[dir="rtl"] .footer-logo {
     text-decoration: underline;
 }
 
-/* RTL adjustments for legal pages */
-html[dir="rtl"] .legal-content ul {
-    padding-left: 0;
-    padding-right: var(--spacing-md);
+/* RTL testimonial slider fixes */
+html[dir="rtl"] .testimonials-slider {
+    flex-direction: row-reverse;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+html[dir="rtl"] .testimonials-slider::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+/* Fix duplicate logo issue in RTL mode */
+html[dir="rtl"] #header .logo a > img.logo-image:nth-of-type(2),
+html[dir="rtl"] #header .logo a > span.logo-text:nth-of-type(2) {
+    display: none;
+}
+
+/* Mobile menu adjustments for RTL */
+@media (max-width: 768px) {
+    html[dir="rtl"] .nav-links {
+        left: auto;
+        right: -100%;
+        box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    html[dir="rtl"] .nav-links.active {
+        left: auto;
+        right: 0;
+    }
+    
+    html[dir="rtl"] #menu-toggle {
+        margin-left: 0;
+        margin-right: auto;
+    }
 }

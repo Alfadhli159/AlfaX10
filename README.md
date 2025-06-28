@@ -55,6 +55,26 @@ The website is fully responsive and works on:
 - Tablets (768px - 992px)
 - Desktops (above 992px)
 
+## 🔤 Bilingual Support (English/Arabic)
+
+The website features full bilingual support with the following enhancements:
+
+- Language switcher in the navigation menu (EN | AR)
+- RTL (Right-to-Left) layout for Arabic language
+- All content is translated and properly displayed in both languages
+- Remembers user's language preference with localStorage
+- Responsive design that works in both language modes
+
+### RTL Layout Adjustments
+
+Special care has been taken to ensure the Arabic version of the site follows RTL design principles:
+
+- Menu appears on the right side in Arabic mode
+- Logo appears on the left side in Arabic mode 
+- Testimonials slider direction is reversed for proper RTL navigation
+- Form elements and interactive components are properly aligned
+- Legal pages (Privacy Policy, Terms of Service, Cookie Policy) support both languages
+
 ## 🔒 Security Features
 
 - Form input sanitization to prevent XSS attacks
