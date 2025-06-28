@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title data-i18n="meta.title">AlfaX10 - Mobile Apps, Websites & Custom Software Services</title>
+    <meta name="description" content="AlfaX10 specializes in developing mobile apps, websites, and custom software services with innovative solutions for businesses.">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                </a>
+            </div>
+            <nav id="nav-menu">
+                <button id="menu-toggle" aria-label="Toggle Navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="#hero" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#about" data-i18n="nav.about">About</a></li>
+                    <li><a href="#services" data-i18n="nav.services">Services</a></li>
+                    <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+                    <li><a href="#testimonials" data-i18n="nav.testimonials">Testimonials</a></li>
+                    <li><a href="#contact" class="btn-contact" data-i18n="nav.contact">Contact Us</a></li>
+                    <li class="lang-switcher"><button id="lang-toggle" aria-label="Switch Language">EN | AR</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    <span data-i18n="hero.title.start">Building</span> 
+                    <span class="accent-blue" data-i18n="hero.title.digital">Digital</span> 
+                    <span class="accent-yellow" data-i18n="hero.title.experiences">Experiences</span> 
+                    <span data-i18n="hero.title.end">That Matter</span>
+                </h1>
+                <p data-i18n="hero.description">We create innovative mobile apps, websites, and custom software solutions that transform businesses and enhance user experiences.</p>
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary" data-i18n="hero.cta.primary">Get Started</a>
+                    <a href="#services" class="btn btn-secondary" data-i18n="hero.cta.secondary">Explore Services</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- Hero image -->
+                <img src="assets/hero1.webp" alt="Hero Image" class="hero-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span data-i18n="about.title.start">About</span> 
+                    <span class="accent-blue" data-i18n="about.title.end">Us</span>
+                </h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 data-i18n="about.mission.title">Our Mission</h3>
+                    <p data-i18n="about.mission.p1">At AlfaX10, we're committed to delivering cutting-edge digital solutions that help businesses thrive in today's competitive landscape. Our mission is to transform ideas into powerful, user-centric applications and websites that drive growth and enhance user engagement.</p>
+                    <p data-i18n="about.mission.p2">Founded by a team of tech enthusiasts, we combine technical expertise with creative thinking to build solutions that are not just functional but also aesthetically pleasing and intuitive to use.</p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">100+</span>
+                            <span class="stat-label" data-i18n="about.stats.projects">Projects Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label" data-i18n="about.stats.clients">Happy Clients</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5+</span>
+                            <span class="stat-label" data-i18n="about.stats.experience">Years of Experience</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="assets/about.png" alt="About Us Image" class="about-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span data-i18n="services.title.our">Our</span> 
+                    <span class="accent-yellow" data-i18n="services.title.services">Services</span>
+                </h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="services-grid">
+                <!-- Service Item 1 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/mobile_app_development.webp" alt="Mobile App Development" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.mobile.title">Mobile App Development</h3>
+                    <p data-i18n="services.mobile.desc">We build native and cross-platform mobile applications that deliver exceptional user experiences across iOS and Android platforms.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.mobile.feature1">Custom UI/UX Design</li>
+                        <li data-i18n="services.mobile.feature2">Native & Hybrid Solutions</li>
+                        <li data-i18n="services.mobile.feature3">Performance Optimization</li>
+                        <li data-i18n="services.mobile.feature4">Ongoing Support & Maintenance</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Item 2 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/website_design_development.webp" alt="Website Design & Development" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.web.title">Website Design & Development</h3>
+                    <p data-i18n="services.web.desc">We create responsive, modern websites with clean code and intuitive user interfaces that drive conversions and engagement.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.web.feature1">Responsive Design</li>
+                        <li data-i18n="services.web.feature2">SEO Optimization</li>
+                        <li data-i18n="services.web.feature3">Content Management Systems</li>
+                        <li data-i18n="services.web.feature4">E-commerce Solutions</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Item 3 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/custom_software_development.webp" alt="Custom Software Development" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.software.title">Custom Software Development</h3>
+                    <p data-i18n="services.software.desc">We develop tailored software solutions that solve complex business challenges and streamline operations.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.software.feature1">Business Analysis</li>
+                        <li data-i18n="services.software.feature2">Custom API Development</li>
+                        <li data-i18n="services.software.feature3">Integration Services</li>
+                        <li data-i18n="services.software.feature4">Cloud Solutions</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Item 4 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/tech_consultations.webp" alt="Tech Consultations" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.consulting.title">Tech Consultations</h3>
+                    <p data-i18n="services.consulting.desc">Our experts provide strategic technology consultation to help businesses make informed decisions and implement effective tech solutions.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.consulting.feature1">Technology Assessment</li>
+                        <li data-i18n="services.consulting.feature2">Digital Transformation</li>
+                        <li data-i18n="services.consulting.feature3">IT Strategy Development</li>
+                        <li data-i18n="services.consulting.feature4">Process Optimization</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Item 5 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/device_installation_maintenance.webp" alt="Installation and Maintenance of Devices" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.installation.title">Installation and Maintenance of Devices</h3>
+                    <p data-i18n="services.installation.desc">We provide professional installation, configuration, and ongoing maintenance services for a wide range of hardware devices and technical equipment.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.installation.feature1">Hardware Setup & Configuration</li>
+                        <li data-i18n="services.installation.feature2">Preventative Maintenance</li>
+                        <li data-i18n="services.installation.feature3">Troubleshooting & Repair</li>
+                        <li data-i18n="services.installation.feature4">Technology Upgrades</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Item 6 -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/services/ui_design.webp" alt="User Interface (UI) Design" class="service-img">
+                    </div>
+                    <h3 data-i18n="services.ui.title">User Interface (UI) Design</h3>
+                    <p data-i18n="services.ui.desc">We create visually stunning, user-centered interface designs that enhance usability, increase engagement, and elevate your brand's digital presence.</p>
+                    <ul class="service-features">
+                        <li data-i18n="services.ui.feature1">User Experience Research</li>
+                        <li data-i18n="services.ui.feature2">Visual Design & Branding</li>
+                        <li data-i18n="services.ui.feature3">Interactive Prototyping</li>
+                        <li data-i18n="services.ui.feature4">Accessibility Optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span data-i18n="projects.title.featured">Featured</span> 
+                    <span class="accent-blue" data-i18n="projects.title.projects">Projects</span>
+                </h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="Featured_Projects/smart_app-card.png" alt="Smart App Project" class="project-img">
+                        <div class="coming-soon-badge" data-i18n="projects.badge">Coming Soon</div>
+                    </div>
+                    <div class="project-info">
+                        <h3 data-i18n="projects.smartapp.title">Smart App</h3>
+                        <p data-i18n="projects.smartapp.desc">Smart App – AI Messaging Made Simple
+Smart App is an intelligent mobile tool that helps users generate personalized messages and auto-replies in seconds. Powered by AI and integrated with WhatsApp, it streamlines communication for both personal and business use — saving time and boosting engagement.</p>
+                        <div class="project-tags">
+                            <span data-i18n="projects.smartapp.tag1">Mobile App</span>
+                            <span data-i18n="projects.smartapp.tag2">AI</span>
+                            <span data-i18n="projects.smartapp.tag3">IoT</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="Featured_Projects/tahaqqaq-card.png" alt="Tahaqqaq Project" class="project-img">
+                        <div class="coming-soon-badge" data-i18n="projects.badge">Coming Soon</div>
+                    </div>
+                    <div class="project-info">
+                        <h3 data-i18n="projects.tahaqqaq.title">Tahaqqaq</h3>
+                        <p data-i18n="projects.tahaqqaq.desc">Tahaqqaq is a smart platform designed to verify the identity and authorization of individuals affiliated with an organization. It ensures secure access and proper role validation during public events, assemblies, or official gatherings.</p>
+                        <div class="project-tags">
+                            <span data-i18n="projects.tahaqqaq.tag1">Web Platform</span>
+                            <span data-i18n="projects.tahaqqaq.tag2">Mobile App</span>
+                            <span data-i18n="projects.tahaqqaq.tag3">API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span data-i18n="testimonials.title.client">Client</span> 
+                    <span class="accent-yellow" data-i18n="testimonials.title.testimonials">Testimonials</span>
+                </h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="testimonials-slider">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p data-i18n="testimonials.1.content">Working with AlfaX10 transformed our business. Their mobile app solution increased our customer engagement by 200% within just three months of launch.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <!-- Placeholder for author image -->
+                            <div class="image-placeholder small">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="author-info">
+                            <h4 data-i18n="testimonials.1.author">سارة الحمد</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p data-i18n="testimonials.2.content">The website AlfaX10 built for us not only looks amazing but also delivers exceptional performance. Our conversion rate has improved significantly since the redesign.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <!-- Placeholder for author image -->
+                            <div class="image-placeholder small">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="author-info">
+                            <h4 data-i18n="testimonials.2.author">محمد الخميس</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p data-i18n="testimonials.3.content">Their team's attention to detail and commitment to quality is unmatched. AlfaX10 delivered our custom software solution ahead of schedule and exceeded all our expectations.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <!-- Placeholder for author image -->
+                            <div class="image-placeholder small">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="author-info">
+                            <h4 data-i18n="testimonials.3.author">فاطمة القحطاني</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="prev-btn" aria-label="Previous testimonial">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="slider-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                </div>
+                <button class="next-btn" aria-label="Next testimonial">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span data-i18n="contact.title.get">Get In</span> 
+                    <span class="accent-blue" data-i18n="contact.title.touch">Touch</span>
+                </h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3 data-i18n="contact.info.title">Contact Information</h3>
+                    <p data-i18n="contact.info.subtitle">Have a project in mind? Let's discuss how we can help bring your ideas to life.</p>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n="contact.info.address">We work remotely and use virtual offices</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span data-i18n="contact.info.email">info@alfax10.com</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span data-i18n="contact.info.phone">+966553985690</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name" data-i18n="contact.form.name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-i18n="contact.form.email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" data-i18n="contact.form.subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" data-i18n="contact.form.message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <span class="error-message"></span>
+                        </div>
+                        <!-- Honeypot field for spam protection -->
+                        <div class="honeypot-field">
+                            <label for="website" data-i18n="contact.form.honeypot">Website (Leave this empty)</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                    <p data-i18n="footer.tagline">Creating digital experiences that transform businesses and enhance lives.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.quicklinks.title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#hero" data-i18n="nav.home">Home</a></li>
+                            <li><a href="#about" data-i18n="nav.about">About Us</a></li>
+                            <li><a href="#services" data-i18n="nav.services">Services</a></li>
+                            <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.services.title">Services</h4>
+                        <ul>
+                            <li><a href="#services" data-i18n="services.mobile.title">Mobile App Development</a></li>
+                            <li><a href="#services" data-i18n="services.web.title">Website Design</a></li>
+                            <li><a href="#services" data-i18n="services.software.title">Custom Software</a></li>
+                            <li><a href="#services" data-i18n="services.consulting.title">Tech Consultations</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.legal.title">Legal</h4>
+                        <ul>
+                            <li><a href="privacy-policy.html" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+                            <li><a href="terms-of-service.html" data-i18n="footer.legal.terms">Terms of Service</a></li>
+                            <li><a href="cookie-policy.html" data-i18n="footer.legal.cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; <span id="current-year">2025</span> AlfaX10. All rights reserved.</p>
+                <p data-i18n="footer.credit">Designed and developed with <i class="fas fa-heart"></i> by AlfaX10 Team</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="scripts.js"></script>
+</body>
+</html>

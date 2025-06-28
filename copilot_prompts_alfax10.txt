@@ -1,0 +1,52 @@
+You are tasked with building a modern, responsive website for "AlfaX10" — a company specializing in developing mobile apps, websites, and custom software services.
+
+## 🎯 Project Objective:
+Create a complete website based on the visual design provided in screenshots. The design is modern, dark-themed with accent colors of blue and yellow. Your implementation must be clean, commented, secure, and easy to extend in the future.
+
+## 📁 Required File Structure:
+Please generate the following files:
+
+1. `index.html` - Main landing page
+2. `styles.css` - Main CSS styles including dark theme and yellow highlights
+3. `scripts.js` - Any required JavaScript (form validations, animations, etc.)
+4. `assets/` - Folder to contain images, logos, and media
+5. `README.md` - Instructions for developers
+
+## 🧱 Sections to Include in index.html:
+- Header with navigation bar
+- Hero section: Welcome text and call to action
+- About us: company mission
+- Services: app development, website design, tech consultations
+- Featured Projects:
+    - `smart_app` – Coming soon
+    - `Tahaqqaq` – Coming soon
+- Testimonials
+- Contact Form
+- Footer with company info and quick links
+
+## 🎨 Theme Guidelines:
+- Background: dark (#121212)
+- Primary text: white
+- Accent: vibrant blue (#00BFFF) and yellow (#FFD700)
+- Font: modern and readable (e.g., "Inter", "Poppins")
+
+## ✅ Requirements:
+- Use semantic HTML5 elements.
+- Use responsive layout (Flexbox or CSS Grid).
+- Ensure accessibility compliance (contrast, keyboard nav, alt text).
+- Use meaningful `id` and `class` names.
+- Add HTML comments explaining each section.
+- Add CSS comments for each styling block.
+- Ensure JavaScript is modular and well-commented.
+- Sanitize all user inputs in forms to prevent injection attacks.
+
+## 🔐 Security:
+- Escape user input in JavaScript
+- Validate contact form inputs (email format, required fields)
+- Include honeypot field or hCaptcha
+- No third-party script loading unless necessary
+
+## 🔄 Future Development Notes:
+Ensure the code is modular to allow addition of a blog section or dynamic product listings later.
+
+Start with the HTML, then style with CSS, and finally enhance interactivity with JavaScript. Please maintain clean structure and include comments for every functional block of code.
