@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Homepage -->
+
   <url>
     <loc>https://www.alfax10.com/</loc>
     <lastmod>2025-06-29</lastmod>
@@ -11,8 +10,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alfax10.com/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.alfax10.com/?lang=ar"/>
   </url>
-  
-  <!-- Terms of Service -->
+
   <url>
     <loc>https://www.alfax10.com/terms-of-service.html</loc>
     <lastmod>2025-06-29</lastmod>
@@ -21,8 +19,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alfax10.com/terms-of-service.html?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.alfax10.com/terms-of-service.html?lang=ar"/>
   </url>
-  
-  <!-- Privacy Policy -->
+
   <url>
     <loc>https://www.alfax10.com/privacy-policy.html</loc>
     <lastmod>2025-06-29</lastmod>
@@ -31,8 +28,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alfax10.com/privacy-policy.html?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.alfax10.com/privacy-policy.html?lang=ar"/>
   </url>
-  
-  <!-- Cookie Policy -->
+
   <url>
     <loc>https://www.alfax10.com/cookie-policy.html</loc>
     <lastmod>2025-06-29</lastmod>
@@ -41,5 +37,5 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alfax10.com/cookie-policy.html?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.alfax10.com/cookie-policy.html?lang=ar"/>
   </url>
-  
+
 </urlset>
