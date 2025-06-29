@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <!-- Set language based on stored preference right away -->
+    <script>
+        // Set language based on stored preference right away
+        const savedLang = localStorage.getItem('alfax10_language') || 'en';
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title data-i18n="404.title">Page Not Found - AlfaX10</title>
+    <meta name="description" data-i18n="404.description" content="The page you're looking for couldn't be found. Navigate back to the AlfaX10 homepage.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .error-page {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-icon {
+            font-size: 6rem;
+            color: var(--accent-blue);
+            margin-bottom: 2rem;
+        }
+        .error-code {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent-yellow);
+        }
+        .error-message {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                </a>
+            </div>
+            <nav id="nav-menu">
+                <button id="menu-toggle" aria-label="Toggle Navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="index.html#about" data-i18n="nav.about">About</a></li>
+                    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                    <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
+                    <li><a href="index.html#contact" class="btn-contact" data-i18n="nav.contact">Contact Us</a></li>
+                    <li class="lang-switcher"><button id="lang-toggle" aria-label="Switch Language">EN | AR</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 404 Error Content -->
+    <section class="error-page">
+        <div class="container">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h1 class="error-code">404</h1>
+            <h2 class="error-message" data-i18n="404.message">Oops! The page you're looking for doesn't exist.</h2>
+            <div class="error-actions">
+                <a href="index.html" class="btn btn-primary" data-i18n="404.home">Back to Home</a>
+                <a href="index.html#contact" class="btn btn-secondary" data-i18n="404.contact">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                    <p data-i18n="footer.tagline">Creating digital experiences that transform businesses and enhance lives.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.quicklinks.title">Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                            <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
+                            <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                            <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.legal.title">Legal</h4>
+                        <ul>
+                            <li><a href="privacy-policy.html" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+                            <li><a href="terms-of-service.html" data-i18n="footer.legal.terms">Terms of Service</a></li>
+                            <li><a href="cookie-policy.html" data-i18n="footer.legal.cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2025 AlfaX10. All rights reserved.</p>
+                <p data-i18n="footer.credit">Designed and developed with <i class="fas fa-heart"></i> by AlfaX10 Team</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript - with defer attribute for better performance -->
+    <script src="scripts.js" defer></script>
+</body>
+</html>

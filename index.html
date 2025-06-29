@@ -12,7 +12,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title data-i18n="meta.title">AlfaX10 - Mobile Apps, Websites & Custom Software Services</title>
-    <meta name="description" content="AlfaX10 specializes in developing mobile apps, websites, and custom software services with innovative solutions for businesses.">
+    <meta name="description" data-i18n="meta.description" content="AlfaX10 specializes in developing mobile apps, websites, and custom software services with innovative solutions that transform businesses and enhance user experiences.">
+    <meta name="keywords" content="mobile app development, website design, custom software, tech consultations, software solutions, digital transformation, UI design, device installation, IT services">
+    <meta name="author" content="AlfaX10 Team">
+    <!-- Open Graph Meta Tags for social sharing -->
+    <meta property="og:title" content="AlfaX10 - Mobile Apps, Websites & Custom Software Services">
+    <meta property="og:description" content="We create innovative mobile apps, websites, and custom software solutions that transform businesses and enhance user experiences.">
+    <meta property="og:image" content="https://www.alfax10.com/assets/logo-AldaX10.png">
+    <meta property="og:url" content="https://www.alfax10.com/">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AlfaX10 - Mobile Apps, Websites & Custom Software Services">
+    <meta name="twitter:description" content="We create innovative mobile apps, websites, and custom software solutions that transform businesses.">
+    <meta name="twitter:image" content="https://www.alfax10.com/assets/logo-AldaX10.png">
+    <!-- Canonical URL to prevent duplicate content issues -->
+    <link rel="canonical" href="https://www.alfax10.com/">
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -474,7 +489,34 @@ Smart App is an intelligent mobile tool that helps users generate personalized m
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- JavaScript -->
-    <script src="scripts.js"></script>
+    <!-- JavaScript - with defer attribute for better performance -->
+    <script src="scripts.js" defer></script>
+    
+    <!-- Preload critical assets for better performance -->
+    <link rel="preload" href="assets/logo-AldaX10.png" as="image">
+    <link rel="preload" href="assets/hero1.webp" as="image">
+    
+    <!-- Enable browser caching with .htaccess on server side -->
+    <!-- Add structured data for rich results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AlfaX10",
+      "url": "https://www.alfax10.com",
+      "logo": "https://www.alfax10.com/assets/logo-AldaX10.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+966553985690",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Arabic"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/alfax10",
+        "https://www.twitter.com/alfax10",
+        "https://www.linkedin.com/company/alfax10"
+      ]
+    }
+    </script>
 </body>
 </html>
