@@ -1,20 +1,52 @@
 <!DOCTYPE html>
-<html lang="                <button id="menu-toggle" aria-label="Toggle Navigation">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
-                    <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
-                    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
-                    <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
-                    <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
-                    <li class="lang-switcher">
-                        <button id="lang-toggle">EN | AR</button>
-                    </li>
-                </ul>="ltr">
+<html lang="en" dir="ltr">
 <head>
+    <!-- Set language based on stored preference or URL parameter right away -->
+    <script>
+        // Check URL for language param
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        
+        // If lang=ar is in URL, force Arabic
+        if (urlLang === 'ar') {
+            localStorage.setItem('alfax10_language', 'ar');
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            // Add RTL class to body as soon as possible
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.add('rtl');
+                console.log('Arabic language forced from URL parameter');
+            });
+        } 
+        // If lang=en is in URL, force English
+        else if (urlLang === 'en') {
+            localStorage.setItem('alfax10_language', 'en');
+            document.documentElement.setAttribute('lang', 'en');
+            document.documentElement.setAttribute('dir', 'ltr');
+            // Ensure RTL class is removed
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.remove('rtl');
+                console.log('English language forced from URL parameter');
+            });
+        }
+        else {
+            // Otherwise check localStorage
+            const savedLang = localStorage.getItem('alfax10_language') || 'en';
+            document.documentElement.setAttribute('lang', savedLang);
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+            
+            // Add RTL class for Arabic, ensure it's removed for English
+            document.addEventListener('DOMContentLoaded', function() {
+                if (savedLang === 'ar') {
+                    document.body.classList.add('rtl');
+                    console.log('Arabic language set from localStorage');
+                } else {
+                    document.body.classList.remove('rtl');
+                    console.log('English language set from localStorage');
+                }
+            });
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -27,8 +59,111 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Arabic language specific styles */
+        html[lang="ar"] {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        html[lang="ar"] body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        html[lang="ar"] .legal-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        html[lang="ar"] .legal-page h1,
+        html[lang="ar"] .legal-page h2,
+        html[lang="ar"] .legal-page h3,
+        html[lang="ar"] .legal-page p,
+        html[lang="ar"] .legal-page li {
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        html[lang="ar"] .legal-content ul, 
+        html[lang="ar"] .legal-content ol {
+            padding-right: 20px;
+            padding-left: 0;
+        }
+        
+        /* Debug styling for translated elements when using ?debug=true */
+        .translated-element {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            background-color: rgba(0, 255, 0, 0.1);
+            padding: 2px;
+        }
+        
+        /* Fix RTL issues with section headers */
+        html[lang="ar"] .section-header .section-divider {
+            margin: 0 auto;
+        }
+        
+        /* Fix RTL issues with last updated text */
+        html[lang="ar"] .last-updated {
+            text-align: right;
+            direction: rtl;
+        }
+    </style>
 </head>
-<body>
+<body class="terms-of-service-page">
+    <!-- Hidden debug panel that can be shown with URL parameter debug=true -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('debug') === 'true') {
+                const debugPanel = document.createElement('div');
+                debugPanel.style.position = 'fixed';
+                debugPanel.style.bottom = '10px';
+                debugPanel.style.right = '10px';
+                debugPanel.style.padding = '10px';
+                debugPanel.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                debugPanel.style.color = 'white';
+                debugPanel.style.zIndex = '9999';
+                debugPanel.style.fontSize = '12px';
+                debugPanel.innerHTML = `
+                    <div>Language: <strong>${document.documentElement.lang}</strong></div>
+                    <div>Direction: <strong>${document.documentElement.dir}</strong></div>
+                    <button id="forceArabic" style="margin:5px 0">Force Arabic</button>
+                    <button id="forceEnglish" style="margin:5px 0">Force English</button>
+                    <button id="reloadPage" style="margin:5px 0">Reload Page</button>
+                    <button id="clearStorage" style="margin:5px 0">Clear Storage</button>
+                `;
+                document.body.appendChild(debugPanel);
+                
+                document.getElementById('forceArabic').addEventListener('click', function() {
+                    localStorage.setItem('alfax10_language', 'ar');
+                    document.documentElement.setAttribute('lang', 'ar');
+                    document.documentElement.setAttribute('dir', 'rtl');
+                    document.body.classList.add('rtl');
+                    if (typeof applyTermsTranslations === 'function') {
+                        applyTermsTranslations();
+                    }
+                    alert('Arabic forced, click Reload to see changes');
+                });
+                
+                document.getElementById('forceEnglish').addEventListener('click', function() {
+                    localStorage.setItem('alfax10_language', 'en');
+                    document.documentElement.setAttribute('lang', 'en');
+                    document.documentElement.setAttribute('dir', 'ltr');
+                    document.body.classList.remove('rtl');
+                    alert('English forced, click Reload to see changes');
+                });
+                
+                document.getElementById('reloadPage').addEventListener('click', function() {
+                    window.location.reload();
+                });
+                
+                document.getElementById('clearStorage').addEventListener('click', function() {
+                    localStorage.removeItem('alfax10_language');
+                    alert('Storage cleared, click Reload to see changes');
+                });
+            }
+        });
+    </script>
+
     <!-- Header Section -->
     <header id="header">
         <div class="container">
@@ -40,17 +175,20 @@
                     </span>
                 </a>
             </div>
-            <nav id="nav-menu">
+            <nav id="nav-menu" class="legal-nav">
+                <button id="menu-toggle" aria-label="Toggle Navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
                 <ul class="nav-links">
-                    <li><a href="index.html#hero">Home</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="index.html#projects">Projects</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
+                    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                    <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
+                    <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
+                    <li class="lang-switcher"><button id="lang-toggle" class="btn btn-secondary">EN | AR</button></li>
                 </ul>
-                <div class="nav-buttons">
-                    <button id="lang-toggle" class="btn btn-secondary">EN | AR</button>
-                </div>
             </nav>
         </div>
     </header>
@@ -64,57 +202,57 @@
             </div>
             
             <div class="legal-content">
-                <p class="last-updated">Last Updated: June 27, 2025</p>
+                <p class="last-updated" data-i18n="terms.lastUpdated">Last Updated: June 29, 2025</p>
 
-                <h2>1. Introduction</h2>
-                <p>Welcome to AlfaX10. These Terms of Service ("Terms") govern your use of our website located at www.alfax10.com (the "Service") operated by AlfaX10. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.</p>
+                <h2 data-i18n="terms.intro.title">1. Introduction</h2>
+                <p data-i18n="terms.intro.text">Welcome to AlfaX10. These Terms of Service ("Terms") govern your use of our website located at www.alfax10.com (the "Service") operated by AlfaX10. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.</p>
 
-                <h2>2. Use of Our Services</h2>
-                <p>Our Services are very diverse, so sometimes additional terms or product requirements may apply. Additional terms will be available with the relevant Services, and those additional terms become part of your agreement with us if you use those Services.</p>
+                <h2 data-i18n="terms.services.title">2. Use of Our Services</h2>
+                <p data-i18n="terms.services.text">Our Services are very diverse, so sometimes additional terms or product requirements may apply. Additional terms will be available with the relevant Services, and those additional terms become part of your agreement with us if you use those Services.</p>
 
-                <h2>3. Accounts</h2>
-                <p>When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
-                <p>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.</p>
-                <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+                <h2 data-i18n="terms.accounts.title">3. Accounts</h2>
+                <p data-i18n="terms.accounts.accurate">When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
+                <p data-i18n="terms.accounts.safeguard">You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.</p>
+                <p data-i18n="terms.accounts.disclose">You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
 
-                <h2>4. Intellectual Property</h2>
-                <p>The Service and its original content, features, and functionality are and will remain the exclusive property of AlfaX10 and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of AlfaX10.</p>
+                <h2 data-i18n="terms.ip.title">4. Intellectual Property</h2>
+                <p data-i18n="terms.ip.text">The Service and its original content, features, and functionality are and will remain the exclusive property of AlfaX10 and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of AlfaX10.</p>
 
-                <h2>5. User Content</h2>
-                <p>Our Service may allow you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content"). You are responsible for the Content that you post to the Service, including its legality, reliability, and appropriateness.</p>
-                <p>By posting Content to the Service, you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such Content on and through the Service. You retain any and all of your rights to any Content you submit, post or display on or through the Service and you are responsible for protecting those rights.</p>
-                <p>You represent and warrant that: (i) the Content is yours (you own it) or you have the right to use it and grant us the rights and license as provided in these Terms, and (ii) the posting of your Content on or through the Service does not violate the privacy rights, publicity rights, copyrights, contract rights or any other rights of any person.</p>
+                <h2 data-i18n="terms.content.title">5. User Content</h2>
+                <p data-i18n="terms.content.responsibility">Our Service may allow you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content"). You are responsible for the Content that you post to the Service, including its legality, reliability, and appropriateness.</p>
+                <p data-i18n="terms.content.license">By posting Content to the Service, you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such Content on and through the Service. You retain any and all of your rights to any Content you submit, post or display on or through the Service and you are responsible for protecting those rights.</p>
+                <p data-i18n="terms.content.warranty">You represent and warrant that: (i) the Content is yours (you own it) or you have the right to use it and grant us the rights and license as provided in these Terms, and (ii) the posting of your Content on or through the Service does not violate the privacy rights, publicity rights, copyrights, contract rights or any other rights of any person.</p>
 
-                <h2>6. Links to Other Web Sites</h2>
-                <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by AlfaX10.</p>
-                <p>AlfaX10 has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that AlfaX10 shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
-                <p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
+                <h2 data-i18n="terms.links.title">6. Links to Other Web Sites</h2>
+                <p data-i18n="terms.links.intro">Our Service may contain links to third-party web sites or services that are not owned or controlled by AlfaX10.</p>
+                <p data-i18n="terms.links.responsibility">AlfaX10 has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that AlfaX10 shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
+                <p data-i18n="terms.links.advice">We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
 
-                <h2>7. Termination</h2>
-                <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
-                <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service.</p>
+                <h2 data-i18n="terms.termination.title">7. Termination</h2>
+                <p data-i18n="terms.termination.suspend">We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+                <p data-i18n="terms.termination.cease">Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service.</p>
 
-                <h2>8. Limitation of Liability</h2>
-                <p>In no event shall AlfaX10, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.</p>
+                <h2 data-i18n="terms.liability.title">8. Limitation of Liability</h2>
+                <p data-i18n="terms.liability.text">In no event shall AlfaX10, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.</p>
 
-                <h2>9. Disclaimer</h2>
-                <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
-                <p>AlfaX10, its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements.</p>
+                <h2 data-i18n="terms.disclaimer.title">9. Disclaimer</h2>
+                <p data-i18n="terms.disclaimer.risk">Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
+                <p data-i18n="terms.disclaimer.warranty">AlfaX10, its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements.</p>
 
-                <h2>10. Governing Law</h2>
-                <p>These Terms shall be governed and construed in accordance with the laws of United States, without regard to its conflict of law provisions.</p>
-                <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
+                <h2 data-i18n="terms.governing.title">10. Governing Law</h2>
+                <p data-i18n="terms.governing.law">These Terms shall be governed and construed in accordance with the laws of United States, without regard to its conflict of law provisions.</p>
+                <p data-i18n="terms.governing.waiver">Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
 
-                <h2>11. Changes to These Terms</h2>
-                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
-                <p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
+                <h2 data-i18n="terms.changes.title">11. Changes to These Terms</h2>
+                <p data-i18n="terms.changes.modify">We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+                <p data-i18n="terms.changes.agreement">By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
 
-                <h2>12. Contact Us</h2>
-                <p>If you have any questions about these Terms, please contact us:</p>
+                <h2 data-i18n="terms.contact.title">12. Contact Us</h2>
+                <p data-i18n="terms.contact.questions">If you have any questions about these Terms, please contact us:</p>
                 <ul>
-                    <li>By email: info@alfax10.com</li>
-                    <li>By phone: +1 (555) 123-4567</li>
-                    <li>By mail: 123 Tech Avenue, Suite 200, Innovation City</li>
+                    <li data-i18n="terms.contact.email">By email: info@alfax10.com</li>
+                    <li data-i18n="terms.contact.phone">By phone: +1 (555) 123-4567</li>
+                    <li data-i18n="terms.contact.mail">By mail: 123 Tech Avenue, Suite 200, Innovation City</li>
                 </ul>
             </div>
         </div>
@@ -127,42 +265,42 @@
                 <div class="footer-logo">
                     <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image">
                     <span class="logo-text sr-only">
-                        <span class="accent-blue">Alfa</span><span class="accent-yellow">X10</span>
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
-                    <p>Creating digital experiences that transform businesses and enhance lives.</p>
+                    <p data-i18n="footer.tagline">Creating digital experiences that transform businesses and enhance lives.</p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
-                        <h4>Quick Links</h4>
+                        <h4 data-i18n="footer.quicklinks.title">Quick Links</h4>
                         <ul>
-                            <li><a href="index.html#hero">Home</a></li>
-                            <li><a href="index.html#about">About Us</a></li>
-                            <li><a href="index.html#services">Services</a></li>
-                            <li><a href="index.html#projects">Projects</a></li>
+                            <li><a href="index.html#hero" data-i18n="nav.home">Home</a></li>
+                            <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
+                            <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                            <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4>Services</h4>
+                        <h4 data-i18n="footer.services.title">Services</h4>
                         <ul>
-                            <li><a href="index.html#services">Mobile App Development</a></li>
-                            <li><a href="index.html#services">Website Design</a></li>
-                            <li><a href="index.html#services">Custom Software</a></li>
-                            <li><a href="index.html#services">Tech Consultations</a></li>
+                            <li><a href="index.html#services" data-i18n="services.mobile.title">Mobile App Development</a></li>
+                            <li><a href="index.html#services" data-i18n="services.web.title">Website Design</a></li>
+                            <li><a href="index.html#services" data-i18n="services.software.title">Custom Software</a></li>
+                            <li><a href="index.html#services" data-i18n="services.consulting.title">Tech Consultations</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4>Legal</h4>
+                        <h4 data-i18n="footer.legal.title">Legal</h4>
                         <ul>
-                            <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                            <li><a href="terms-of-service.html">Terms of Service</a></li>
-                            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                            <li><a href="privacy-policy.html" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+                            <li><a href="terms-of-service.html" data-i18n="footer.legal.terms">Terms of Service</a></li>
+                            <li><a href="cookie-policy.html" data-i18n="footer.legal.cookies">Cookie Policy</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <span id="current-year">2025</span> AlfaX10. All rights reserved.</p>
-                <p>Designed and developed with <i class="fas fa-heart"></i> by AlfaX10 Team</p>
+                <p data-i18n="footer.copyright">&copy; <span id="current-year">2025</span> AlfaX10. All rights reserved.</p>
+                <p data-i18n="footer.credit">Designed and developed with <i class="fas fa-heart"></i> by AlfaX10 Team</p>
             </div>
         </div>
     </footer>
@@ -172,7 +310,194 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Set initial language attribute before loading scripts -->
+    <script>
+        // Set language based on stored preference right away
+        const savedLang = localStorage.getItem('alfax10_language') || 'en';
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+        if (savedLang === 'ar') {
+            document.body.classList.add('rtl');
+        }
+    </script>
+    
     <!-- JavaScript -->
     <script src="scripts.js"></script>
+    
+    <!-- Special fix script for Terms of Service page -->
+    <script>
+        // This script ensures the Terms of Service page translates correctly
+        window.addEventListener('load', function() {
+            // Check if we're on the Terms of Service page
+            if (window.location.pathname.includes('terms-of-service.html')) {
+                console.log('Terms of Service page detected - applying special translation fix');
+                
+                function applyTermsTranslations() {
+                    // Make sure translations object is available
+                    if (typeof translations === 'undefined') {
+                        console.error('Translations object is not defined! Will retry in 1 second...');
+                        setTimeout(applyTermsTranslations, 1000);
+                        return;
+                    }
+                    
+                    // Add some debug info about translations object
+                    console.log('Translations object found:');
+                    console.log('Has AR translations:', !!translations.ar);
+                    console.log('Has EN translations:', !!translations.en);
+                    console.log('AR terms.title:', translations.ar ? translations.ar["terms.title"] : "undefined");
+                    
+                    // Get the language from localStorage
+                    const savedLang = localStorage.getItem('alfax10_language');
+                    let currentLang = savedLang || 'en';
+                    console.log('Language from localStorage:', currentLang);
+                    
+                    // Force Arabic for testing when ?lang=ar is in URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('lang') === 'ar') {
+                        console.log('URL parameter forcing Arabic language');
+                        localStorage.setItem('alfax10_language', 'ar');
+                        currentLang = 'ar';
+                    }
+                    
+                    // For debugging - force apply translations if Arabic is selected
+                    if (currentLang === 'ar') {
+                        console.log('Arabic language detected - forcing RTL and Arabic translations');
+                        document.documentElement.setAttribute('dir', 'rtl');
+                        document.documentElement.setAttribute('lang', 'ar');
+                        document.body.classList.add('rtl');
+                    }
+                    console.log(`Applying ${currentLang} translations to Terms of Service page`);
+                    
+                    // Ensure the HTML lang and dir attributes match the saved language
+                    document.documentElement.setAttribute('lang', currentLang);
+                    document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+                    
+                    // Add/remove RTL class to body for additional styling
+                    if (currentLang === 'ar') {
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.body.classList.remove('rtl');
+                    }
+                    
+                    // Update the toggle button text
+                    const langToggle = document.getElementById('lang-toggle');
+                    if (langToggle) {
+                        langToggle.textContent = currentLang === 'en' ? 'EN | AR' : 'AR | EN';
+                        
+                        // Remove any existing event listeners by cloning the element
+                        const newLangToggle = langToggle.cloneNode(true);
+                        langToggle.parentNode.replaceChild(newLangToggle, langToggle);
+                        
+                        // Add click handler for language toggle
+                        newLangToggle.addEventListener('click', function() {
+                            // Switch between 'en' and 'ar'
+                            const newLang = currentLang === 'en' ? 'ar' : 'en';
+                            console.log(`Switching language from ${currentLang} to ${newLang}`);
+                            
+                            // Save the new language preference
+                            localStorage.setItem('alfax10_language', newLang);
+                            
+                            // Reload the page to ensure all translations are applied properly
+                            window.location.reload();
+                        });
+                    }
+                    
+                    // Apply translations for all elements with data-i18n attributes
+                    console.log(`Applying ${currentLang} translations to all elements`);
+                    const elements = document.querySelectorAll('[data-i18n]');
+                    let translationsApplied = 0;
+                    
+                    // Hardcoded Arabic translations for key terms of service sections
+                    // This is a backup to ensure Arabic is displayed properly
+                    const backupArabicTranslations = {
+                        "terms.heading": "شروط الخدمة",
+                        "terms.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
+                        "terms.intro.title": "١. مقدمة",
+                        "terms.intro.text": "مرحبًا بك في الفا إكس 10. تحكم شروط الخدمة هذه (\"الشروط\") استخدامك لموقعنا الإلكتروني الموجود على www.alfax10.com (\"الخدمة\") الذي تديره الفا إكس 10. من خلال الوصول إلى الخدمة أو استخدامها، فإنك توافق على الالتزام بهذه الشروط. إذا كنت لا توافق على أي جزء من الشروط، فلا يجوز لك الوصول إلى الخدمة.",
+                        "terms.services.title": "٢. استخدام خدماتنا",
+                        "terms.services.text": "خدماتنا متنوعة جدًا، لذلك قد تنطبق أحيانًا شروط إضافية أو متطلبات المنتج. ستكون الشروط الإضافية متاحة مع الخدمات ذات الصلة، وتصبح تلك الشروط الإضافية جزءًا من اتفاقك معنا إذا كنت تستخدم تلك الخدمات.",
+                        "terms.accounts.title": "٣. الحسابات",
+                        "terms.accounts.accurate": "عند إنشاء حساب معنا، يجب عليك تزويدنا بمعلومات دقيقة وكاملة وحديثة في جميع الأوقات. قد يؤدي عدم القيام بذلك إلى خرق الشروط، مما قد يؤدي إلى الإنهاء الفوري لحسابك على خدمتنا.",
+                        "terms.accounts.safeguard": "أنت مسؤول عن حماية كلمة المرور التي تستخدمها للوصول إلى الخدمة وعن أي أنشطة أو إجراءات تتم بموجب كلمة المرور الخاصة بك.",
+                        "terms.accounts.disclose": "أنت توافق على عدم الكشف عن كلمة المرور الخاصة بك لأي طرف ثالث. يجب عليك إخطارنا على الفور عند علمك بأي خرق للأمان أو استخدام غير مصرح به لحسابك."
+                    };
+                    
+                    // For Arabic language, first apply direct translations to ensure key sections are translated
+                    if (currentLang === 'ar') {
+                        console.log('Applying direct Arabic translations first');
+                        // Apply direct translations to critical sections
+                        Object.keys(backupArabicTranslations).forEach(key => {
+                            const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+                            elements.forEach(element => {
+                                element.textContent = backupArabicTranslations[key];
+                                console.log(`Direct translation applied for ${key}`);
+                            });
+                        });
+                    }
+                    
+                    elements.forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        
+                        // First try using the main translations object
+                        if (translations[currentLang] && translations[currentLang][key]) {
+                            // Apply translation with additional logging
+                            const originalText = element.textContent;
+                            const translatedText = translations[currentLang][key];
+                            
+                            // Apply translation based on element type
+                            if (element.tagName === 'TITLE') {
+                                element.textContent = translatedText;
+                            } else if (element.tagName === 'META' && element.hasAttribute('content')) {
+                                element.setAttribute('content', translatedText);
+                            } else if (element.tagName === 'INPUT' && (element.type === 'submit' || element.type === 'button')) {
+                                element.value = translatedText;
+                            } else {
+                                element.textContent = translatedText;
+                            }
+                            
+                            // Log successful translation for debugging
+                            if (currentLang === 'ar' && key.startsWith('terms.')) {
+                                console.log(`Translated '${key}': '${originalText}' → '${translatedText}'`);
+                            }
+                            
+                            translationsApplied++;
+                        } 
+                        // For Arabic, try using backup translations if available
+                        else if (currentLang === 'ar' && backupArabicTranslations[key]) {
+                            const originalText = element.textContent;
+                            const translatedText = backupArabicTranslations[key];
+                            
+                            // Apply backup translation
+                            element.textContent = translatedText;
+                            console.log(`Applied backup translation for '${key}': '${originalText}' → '${translatedText}'`);
+                            translationsApplied++;
+                        }
+                        else {
+                            console.warn(`No ${currentLang} translation found for key: ${key}`);
+                            
+                            // For missing Arabic translations, log to console
+                            if (currentLang === 'ar') {
+                                console.error(`MISSING ARABIC TRANSLATION for key: ${key}`);
+                            }
+                        }
+                    });
+                    
+                    console.log(`Applied ${translationsApplied} translations on the page`);
+                }
+                
+                // Start the translation application process
+                applyTermsTranslations();
+                
+                // Add a delayed second application for Arabic to ensure translations are applied
+                setTimeout(function() {
+                    const currentLang = localStorage.getItem('alfax10_language');
+                    if (currentLang === 'ar') {
+                        console.log('Performing delayed second Arabic translation pass');
+                        applyTermsTranslations();
+                    }
+                }, 2000);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -145,6 +145,8 @@ ul {
     cursor: pointer;
     transition: all var(--transition-normal);
     border: none;
+    min-width: 120px;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -253,6 +255,10 @@ ul {
     padding: 0.7rem 1.5rem !important;
     transition: all var(--transition-fast);
     font-weight: 600;
+    min-width: 120px;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .btn-contact:hover {
@@ -668,6 +674,20 @@ ul {
     background-color: var(--accent-blue);
 }
 
+/* Fix slider navigation buttons for RTL */
+html[dir="rtl"] .prev-btn i.fa-chevron-left:before {
+    content: "\f054"; /* Use right arrow icon instead of left in RTL mode */
+}
+
+html[dir="rtl"] .next-btn i.fa-chevron-right:before {
+    content: "\f053"; /* Use left arrow icon instead of right in RTL mode */
+}
+
+/* Fix slider navigation arrows position in RTL */
+html[dir="rtl"] .slider-controls {
+    direction: rtl;
+}
+
 /* ===== Contact Section ===== */
 #contact {
     padding: var(--spacing-xl) 0;
@@ -864,7 +884,42 @@ html[dir="rtl"] body {
 /* Reverse header layout for RTL */
 html[dir="rtl"] #header .container {
     flex-direction: row-reverse;
+    direction: rtl;
 }
+
+/* RTL Navigation Bar */
+html[dir="rtl"] .nav-links {
+    flex-direction: row-reverse; /* Reverse menu item flow */
+    justify-content: flex-start; /* Start from right in RTL */
+    direction: rtl; /* Ensure proper RTL direction */
+}
+
+/* Arabic nav items proper spacing */
+html[dir="rtl"] .nav-links li {
+    margin-right: var(--spacing-md);
+    margin-left: 0;
+}
+
+html[dir="rtl"] .nav-links li:last-child {
+    margin-right: 0;
+}
+
+/* Apply reverse order to ensure proper RTL menu sequence */
+html[dir="rtl"] .nav-links li:nth-child(1) { order: 6; }
+html[dir="rtl"] .nav-links li:nth-child(2) { order: 5; }
+html[dir="rtl"] .nav-links li:nth-child(3) { order: 4; }
+html[dir="rtl"] .nav-links li:nth-child(4) { order: 3; }
+html[dir="rtl"] .nav-links li:nth-child(5) { order: 2; }
+html[dir="rtl"] .nav-links li:nth-child(6) { order: 1; }
+html[dir="rtl"] .nav-links li:nth-child(7) { order: 0; }
+
+/* Apply reverse order to legal pages menu items in RTL */
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(1) { order: 6; }
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(2) { order: 5; }
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(3) { order: 4; }
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(4) { order: 3; }
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(5) { order: 2; }
+html[dir="rtl"] .legal-nav .nav-links li:nth-child(6) { order: 1; } /* Language switcher */
 
 html[dir="rtl"] .nav-links,
 html[dir="rtl"] .hero-cta,
@@ -893,6 +948,7 @@ html[dir="rtl"] .info-item i {
 
 html[dir="rtl"] .testimonial-author {
     text-align: right;
+    flex-direction: row-reverse;
 }
 
 html[dir="rtl"] .quote-icon {
@@ -909,18 +965,40 @@ html[dir="rtl"] #backToTop {
 }
 
 html[dir="rtl"] .lang-switcher {
-    margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-md);
     margin-left: 0;
+    order: 1; /* Move language switcher to end (visually left) in RTL */
+}
+
+/* Keep logo on the left in RTL */
+html[dir="rtl"] .logo {
+    order: -2; /* Place logo at far left in RTL */
+}
+
+/* Ensure consistent language switcher button styling */
+html[dir="rtl"] #lang-toggle,
+#lang-toggle {
+    font-weight: 600;
+    min-width: 100px;
+    border: 2px solid var(--accent-yellow);
+    padding: 8px 16px;
 }
 
 .nav-links .lang-switcher {
     display: flex;
     align-items: center;
+    margin-left: var(--spacing-sm);
 }
 
-#lang-toggle {
+html[dir="rtl"] .nav-links .lang-switcher {
+    margin-right: var(--spacing-sm);
+    margin-left: 0;
+}
+
+/* Set button styling for language switcher in navigation */
+.nav-links .lang-switcher button {
     background-color: transparent;
-    border: 1px solid var(--accent-yellow);
+    border: 2px solid var(--accent-yellow);
     color: var(--accent-yellow);
     padding: 8px 16px;
     border-radius: var(--border-radius-sm);
@@ -928,20 +1006,9 @@ html[dir="rtl"] .lang-switcher {
     transition: all var(--transition-fast);
     font-size: 1rem;
     font-weight: 600;
+    min-width: 100px;
+    text-align: center;
 }
-
-#lang-toggle:hover {
-    background-color: var(--accent-yellow);
-    color: var(--bg-dark);
-}
-
-#lang-toggle:focus {
-    outline: 2px solid var(--accent-blue);
-    outline-offset: 2px;
-}
-
-/* Arabic fonts are imported in the HTML head */
-
 
 /* ===== Responsive Styles ===== */
 
@@ -1146,14 +1213,21 @@ html[dir="rtl"] .lang-switcher {
 
 .sr-only {
     position: absolute;
-        height: 180px; /* 3x the original mobile size */
-    }
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
     
-    .footer-logo-image {
-        height: 50px;
-    }
+.footer-logo-image {
+    height: 50px;
+}
     
-    #header .container {
+#header .container {
         height: 200px; /* Increased height for mobile to fit larger logo */
     }
 
@@ -1248,15 +1322,74 @@ html[dir="rtl"] .footer-logo {
     text-decoration: underline;
 }
 
+/* Legal pages navigation styles */
+.legal-nav .logo-text {
+    display: none;
+}
+
+.legal-nav .nav-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.legal-nav .lang-switcher {
+    display: flex;
+    align-items: center;
+    margin-left: var(--spacing-md);
+}
+
+html[dir="rtl"] .legal-nav .nav-links {
+    margin-right: auto;
+    margin-left: 0;
+    flex-direction: row-reverse; /* Reverse menu item flow in legal pages */
+}
+
+/* RTL Legal Pages specific navbar styles */
+html[dir="rtl"] .legal-nav .container {
+    direction: rtl;
+}
+
+html[dir="rtl"] .legal-nav .logo {
+    order: -2; /* Place logo on far left in RTL */
+}
+
+html[dir="rtl"] .legal-nav .nav-links li {
+    margin-right: var(--spacing-md);
+    margin-left: 0;
+}
+
+html[dir="rtl"] .legal-nav .nav-links li:last-child {
+    margin-right: 0;
+}
+
+/* Keep Contact button next to logo in RTL for legal pages */
+html[dir="rtl"] .legal-nav a[data-i18n="nav.contact"] {
+    order: -1;
+}
+
+/* Move language switcher to the left in RTL for legal pages */
+html[dir="rtl"] .legal-nav .lang-switcher {
+    order: 1;
+}
+
 /* RTL testimonial slider fixes */
 html[dir="rtl"] .testimonials-slider {
     flex-direction: row-reverse;
     overflow-x: auto;
     scrollbar-width: none; /* Firefox */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
 }
 
 html[dir="rtl"] .testimonials-slider::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
+}
+
+/* Fix RTL testimonial card positioning */
+html[dir="rtl"] .testimonial-card {
+    scroll-snap-align: start;
+    direction: rtl;
 }
 
 /* Fix duplicate logo issue in RTL mode */
@@ -1271,6 +1404,7 @@ html[dir="rtl"] #header .logo a > span.logo-text:nth-of-type(2) {
         left: auto;
         right: -100%;
         box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+        flex-direction: column;
     }
 
     html[dir="rtl"] .nav-links.active {
@@ -1278,8 +1412,129 @@ html[dir="rtl"] #header .logo a > span.logo-text:nth-of-type(2) {
         right: 0;
     }
     
+    html[dir="rtl"] .nav-links li {
+        margin-left: 0;
+        text-align: right;
+        width: 100%;
+        padding-right: var(--spacing-md);
+    }
+    
     html[dir="rtl"] #menu-toggle {
         margin-left: 0;
         margin-right: auto;
     }
+
+    /* Legal navigation specific mobile adjustments */
+    .legal-nav #menu-toggle {
+        position: relative;
+        z-index: 1002;
+    }
+
+    html[dir="rtl"] .legal-nav #menu-toggle {
+        margin-right: 0;
+    }
+}
+
+/* Mobile styles for legal pages navigation */
+@media (max-width: 768px) {
+    .legal-nav .nav-links {
+        margin-left: 0;
+    }
+    
+    html[dir="rtl"] .legal-nav .nav-links {
+        margin-right: 0;
+        flex-direction: column; /* Reset to column in mobile */
+    }
+    
+    .legal-nav .nav-links .lang-switcher {
+        margin: 10px 0;
+        width: 100%;
+        text-align: left;
+    }
+    
+    html[dir="rtl"] .legal-nav .nav-links .lang-switcher {
+        text-align: right;
+    }
+    
+    /* Reset order properties in mobile view */
+    html[dir="rtl"] .legal-nav .logo,
+    html[dir="rtl"] .logo {
+        order: 0;
+    }
+    
+    /* Ensure proper button order in mobile RTL view */
+    html[dir="rtl"] .btn-contact,
+    html[dir="rtl"] a[data-i18n="nav.contact"] {
+        order: 0;
+    }
+    
+    html[dir="rtl"] .lang-switcher {
+        order: 0;
+    }
+    
+    /* Keep menu order in mobile RTL */
+    html[dir="rtl"] .nav-links li:nth-child(1),
+    html[dir="rtl"] .nav-links li:nth-child(2),
+    html[dir="rtl"] .nav-links li:nth-child(3),
+    html[dir="rtl"] .nav-links li:nth-child(4),
+    html[dir="rtl"] .nav-links li:nth-child(5),
+    html[dir="rtl"] .nav-links li:nth-child(6),
+    html[dir="rtl"] .nav-links li:nth-child(7),
+    html[dir="rtl"] .legal-nav .nav-links li:nth-child(1),
+    html[dir="rtl"] .legal-nav .nav-links li:nth-child(2),
+    html[dir="rtl"] .legal-nav .nav-links li:nth-child(3),
+    html[dir="rtl"] .legal-nav .nav-links li:nth-child(4),
+    html[dir="rtl"] .legal-nav .nav-links li:nth-child(5) {
+        order: 0;
+    }
+}
+
+/* Ensure contact button consistency in legal pages */
+.legal-nav .nav-links a[data-i18n="nav.contact"] {
+    min-width: 120px;
+    text-align: center;
+    padding: 8px 16px;
+    white-space: nowrap;
+}
+
+/* Contact button consistency across languages */
+.btn-contact, 
+a[data-i18n="nav.contact"] {
+    min-width: 120px;
+    text-align: center;
+    padding: 10px 20px;
+    white-space: nowrap;
+}
+
+/* Fix for Arabic contact button to match English size */
+html[dir="rtl"] .btn-contact,
+html[dir="rtl"] a[data-i18n="nav.contact"] {
+    font-family: var(--font-arabic);
+    font-size: 16px; /* Adjust size for Arabic text */
+    order: -1; /* Move Contact button next to logo */
+}
+
+/* Apply specific RTL rules for mobile menu */
+@media (max-width: 768px) {
+    html[dir="rtl"] .nav-links {
+        display: flex;
+        flex-direction: column !important;
+    }
+
+    /* Restore proper order for mobile navigation in RTL */
+    html[dir="rtl"] .nav-links li {
+        width: 100%;
+        text-align: right;
+    }
+}
+
+/* Ensure proper RTL layout inside testimonial cards */
+html[dir="rtl"] .testimonial-content {
+    text-align: right;
+}
+
+html[dir="rtl"] .testimonial-author {
+    flex-direction: row-reverse;
+    text-align: right;
+    justify-content: flex-start;
 }

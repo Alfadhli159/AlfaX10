@@ -8,6 +8,14 @@
 
 // Wait for the DOM to be fully loaded before executing scripts
 document.addEventListener('DOMContentLoaded', function() {
+    // Check current page for debugging
+    const currentPage = window.location.pathname.split('/').pop();
+    console.log(`Current page loaded: ${currentPage}`);
+
+    // Force clear any cached language preference for testing
+    // Uncomment this line for debugging
+    // localStorage.removeItem('alfax10_language');
+
     // Initialize all components
     initLanguageSwitcher(); // Initialize language switcher first to apply translations
     initMobileMenu();
@@ -84,10 +92,24 @@ function initTestimonialSlider() {
         // Check if RTL mode is active
         const isRTL = document.documentElement.dir === 'rtl';
         
-        slider.scrollTo({
-            left: isRTL ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        });
+        if (isRTL) {
+            // For RTL, we need to scroll to the right side of the slider
+            // We calculate the position from the right side
+            const totalWidth = slider.scrollWidth;
+            const visibleWidth = slider.clientWidth;
+            const slideIndex = totalSlides - 1 - currentSlide; // Reverse the index for RTL
+            const rtlScrollAmount = slideIndex * slideWidth;
+            
+            slider.scrollTo({
+                left: rtlScrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            slider.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
         
         // Update active dot
         dots.forEach((dot, index) => {
@@ -111,7 +133,13 @@ function initTestimonialSlider() {
     // Previous button click
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            // In RTL, the previous and next are visually reversed
+            const isRTL = document.documentElement.dir === 'rtl';
+            if (isRTL) {
+                currentSlide = (currentSlide + 1) % totalSlides;
+            } else {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            }
             updateSliderPosition();
         });
     }
@@ -119,14 +147,25 @@ function initTestimonialSlider() {
     // Next button click
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % totalSlides;
+            // In RTL, the previous and next are visually reversed
+            const isRTL = document.documentElement.dir === 'rtl';
+            if (isRTL) {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            } else {
+                currentSlide = (currentSlide + 1) % totalSlides;
+            }
             updateSliderPosition();
         });
     }
     
     // Auto-advance slide every 5 seconds
     let slideInterval = setInterval(() => {
-        currentSlide = (currentSlide + 1) % totalSlides;
+        const isRTL = document.documentElement.dir === 'rtl';
+        if (isRTL) {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        } else {
+            currentSlide = (currentSlide + 1) % totalSlides;
+        }
         updateSliderPosition();
     }, 5000);
     
@@ -411,6 +450,214 @@ function updateCopyrightYear() {
 }
 
 /**
+ * Language Switcher
+ * Handles switching between English and Arabic languages
+ * Uses data-i18n attributes to map elements to translation keys
+ */
+function initLanguageSwitcher() {
+    const langToggle = document.getElementById('lang-toggle');
+    if (!langToggle) return;
+    
+    // Get saved language preference or default to English
+    let currentLang = localStorage.getItem('alfax10_language') || 'en';
+    
+    // Apply the language settings on page load
+    applyLanguage(currentLang);
+    
+    // Add click event to language toggle button
+    langToggle.addEventListener('click', function() {
+        // Switch between 'en' and 'ar'
+        const newLang = currentLang === 'en' ? 'ar' : 'en';
+        console.log(`Switching language from ${currentLang} to ${newLang}`);
+        
+        // Get current page for special handling
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        
+        // Check if we're on a legal page
+        const isLegalPage = currentPage === 'terms-of-service.html' || 
+                         currentPage === 'privacy-policy.html' || 
+                         currentPage === 'cookie-policy.html';
+        
+        // Save the new language preference
+        localStorage.setItem('alfax10_language', newLang);
+        
+        // Special handling for legal pages
+        if (isLegalPage) {
+            // For legal pages, forcefully apply the new language and then reload
+            console.log(`Legal page detected, applying ${newLang} translations and reloading`);
+            document.documentElement.setAttribute('lang', newLang);
+            document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
+            
+            if (newLang === 'ar') {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
+            
+            // Add language parameter to URL for more reliable language setting during page reload
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('lang', newLang);
+            
+            // Reload the page with the language parameter
+            window.location.href = currentUrl.toString();
+        } else {
+            // For normal pages, apply translations without reload
+            applyLanguage(newLang);
+            currentLang = newLang;
+        }
+    });
+    
+    /**
+     * Applies the selected language to the page
+     * @param {string} lang - The language code ('en' or 'ar')
+     */
+    function applyLanguage(lang) {
+        // Update HTML lang and dir attributes
+        document.documentElement.setAttribute('lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        
+        // Update toggle button text
+        langToggle.textContent = lang === 'en' ? 'EN | AR' : 'AR | EN';
+        
+        // Add/remove RTL class to body for additional styling
+        if (lang === 'ar') {
+            document.body.classList.add('rtl');
+        } else {
+            document.body.classList.remove('rtl');
+        }
+        
+        // Apply translations to all elements with data-i18n attribute
+        const elements = document.querySelectorAll('[data-i18n]');
+        console.log(`Found ${elements.length} translatable elements for ${lang} language`);
+        
+        // Check if we're on the terms of service page and apply special handling
+        const isTermsPage = window.location.pathname.includes('terms-of-service.html');
+        
+        elements.forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            
+            // First try using the main translations object
+            if (translations[lang] && translations[lang][key]) {
+                // Apply translation based on element type
+                if (element.tagName === 'TITLE') {
+                    element.textContent = translations[lang][key];
+                } else if (element.tagName === 'META' && element.hasAttribute('content')) {
+                    element.setAttribute('content', translations[lang][key]);
+                } else if (element.tagName === 'INPUT' && (element.type === 'submit' || element.type === 'button')) {
+                    element.value = translations[lang][key];
+                } else {
+                    element.textContent = translations[lang][key];
+                    // Add a debug class if we're on terms page and in debug mode
+                    if (isTermsPage && lang === 'ar' && window.location.search.includes('debug=true')) {
+                        element.classList.add('translated-element');
+                    }
+                }
+                console.log(`Applied ${lang} translation for: ${key}`);
+            } else {
+                console.warn(`No ${lang} translation found for key: ${key}`);
+            }
+        });
+        
+        // For Terms of Service page, ensure translations are properly applied for both languages
+        if (window.location.pathname.includes('terms-of-service.html')) {
+            setTimeout(() => {
+                applyTermsTranslations();
+            }, 100);
+        }
+        
+        console.log(`Language set to ${lang}`);
+    }
+}
+
+/**
+ * Special function to ensure Terms of Service translations work properly
+ * This applies a second pass of translations for the terms content
+ */
+function applyTermsTranslations() {
+    const currentLang = localStorage.getItem('alfax10_language') || 'en';
+    
+    console.log(`Applying specialized Terms of Service translations for ${currentLang} language`);
+    
+    // Create a specific backup of translations for terms page
+    // This ensures we have fallbacks if the main translations object fails
+    const backupArabicTranslations = {
+        "terms.heading": "شروط الخدمة",
+        "terms.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
+        "terms.intro.title": "١. مقدمة",
+        "terms.intro.text": "مرحبًا بك في الفا إكس 10. تحكم شروط الخدمة هذه (\"الشروط\") استخدامك لموقعنا الإلكتروني الموجود على www.alfax10.com (\"الخدمة\") الذي تديره الفا إكس 10. من خلال الوصول إلى الخدمة أو استخدامها، فإنك توافق على الالتزام بهذه الشروط. إذا كنت لا توافق على أي جزء من الشروط، فلا يجوز لك الوصول إلى الخدمة.",
+        "terms.services.title": "٢. استخدام خدماتنا",
+        "terms.services.text": "خدماتنا متنوعة جدًا، لذلك قد تنطبق أحيانًا شروط إضافية أو متطلبات المنتج. ستكون الشروط الإضافية متاحة مع الخدمات ذات الصلة، وتصبح تلك الشروط الإضافية جزءًا من اتفاقك معنا إذا كنت تستخدم تلك الخدمات.",
+        "terms.accounts.title": "٣. الحسابات",
+        "terms.accounts.accurate": "عند إنشاء حساب معنا، يجب عليك تزويدنا بمعلومات دقيقة وكاملة وحديثة في جميع الأوقات. قد يؤدي عدم القيام بذلك إلى خرق الشروط، مما قد يؤدي إلى الإنهاء الفوري لحسابك على خدمتنا.",
+        "terms.accounts.safeguard": "أنت مسؤول عن حماية كلمة المرور التي تستخدمها للوصول إلى الخدمة وعن أي أنشطة أو إجراءات تتم بموجب كلمة المرور الخاصة بك.",
+        "terms.accounts.disclose": "أنت توافق على عدم الكشف عن كلمة المرور الخاصة بك لأي طرف ثالث. يجب عليك إخطارنا على الفور عند علمك بأي خرق للأمان أو استخدام غير مصرح به لحسابك."
+    };
+    
+    // Create backup for English translations
+    const backupEnglishTranslations = {
+        "terms.heading": "Terms of Service",
+        "terms.lastUpdated": "Last Updated: June 29, 2025",
+        "terms.intro.title": "1. Introduction",
+        "terms.intro.text": "Welcome to AlfaX10. These Terms of Service (\"Terms\") govern your use of our website located at www.alfax10.com (the \"Service\") operated by AlfaX10. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.",
+        "terms.services.title": "2. Use of Our Services",
+        "terms.services.text": "Our Services are very diverse, so sometimes additional terms or product requirements may apply. Additional terms will be available with the relevant Services, and those additional terms become part of your agreement with us if you use those Services.",
+        "terms.accounts.title": "3. Accounts",
+        "terms.accounts.accurate": "When you create an account with us, you must provide us with information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.",
+        "terms.accounts.safeguard": "You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.",
+        "terms.accounts.disclose": "You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account."
+    };
+    
+    // Apply backup translations to elements that might have failed in the main translation process
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        
+        if (currentLang === 'ar') {
+            // For Arabic, apply backup Arabic translations if needed
+            if (backupArabicTranslations[key] && 
+               (element.textContent.trim() === '' || 
+                element.textContent === translations['en'][key])) {
+                
+                console.log(`Applying Arabic backup translation for: ${key}`);
+                element.textContent = backupArabicTranslations[key];
+            }
+        } else {
+            // For English, apply backup English translations if needed
+            if (backupEnglishTranslations[key] && 
+               (element.textContent.trim() === '' || 
+                element.textContent !== translations['en'][key])) {
+                
+                console.log(`Applying English backup translation for: ${key}`);
+                element.textContent = backupEnglishTranslations[key];
+            }
+        }
+    });
+    
+    // Also apply a delayed second pass for more complex DOM changes
+    setTimeout(function() {
+        const currentLang = localStorage.getItem('alfax10_language');
+        console.log(`Performing delayed second ${currentLang} translation pass`);
+        
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            
+            if (currentLang === 'ar') {
+                // For Arabic, apply backup translations
+                if (backupArabicTranslations[key]) {
+                    element.textContent = backupArabicTranslations[key];
+                }
+            } else {
+                // For English, ensure English text is applied
+                if (backupEnglishTranslations[key]) {
+                    element.textContent = backupEnglishTranslations[key];
+                }
+            }
+        });
+    }, 1000);
+}
+
+/**
  * Translations Object
  * Contains all text content in both English and Arabic
  */
@@ -569,6 +816,62 @@ const translations = {
         "cookies.title": "Cookie Policy - AlfaX10",
         "cookies.description": "AlfaX10 Cookie Policy - Learn about how we use cookies and similar technologies on our website.",
         "cookies.heading": "Cookie Policy",
+        "cookies.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
+        
+        // Terms of Service - Complete Arabic translations
+        "terms.title": "شروط الخدمة - الفا إكس 10",
+        "terms.description": "شروط الخدمة الفا إكس 10 - اقرأ عن الشروط والأحكام لاستخدام خدماتنا.",
+        "terms.heading": "شروط الخدمة",
+        "terms.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
+        
+        "terms.intro.title": "١. مقدمة",
+        "terms.intro.text": "مرحبًا بك في الفا إكس 10. تحكم شروط الخدمة هذه (\"الشروط\") استخدامك لموقعنا الإلكتروني الموجود على www.alfax10.com (\"الخدمة\") الذي تديره الفا إكس 10. من خلال الوصول إلى الخدمة أو استخدامها، فإنك توافق على الالتزام بهذه الشروط. إذا كنت لا توافق على أي جزء من الشروط، فلا يجوز لك الوصول إلى الخدمة.",
+        
+        "terms.services.title": "٢. استخدام خدماتنا",
+        "terms.services.text": "خدماتنا متنوعة جدًا، لذلك قد تنطبق أحيانًا شروط إضافية أو متطلبات المنتج. ستكون الشروط الإضافية متاحة مع الخدمات ذات الصلة، وتصبح تلك الشروط الإضافية جزءًا من اتفاقك معنا إذا كنت تستخدم تلك الخدمات.",
+        
+        "terms.accounts.title": "٣. الحسابات",
+        "terms.accounts.accurate": "عند إنشاء حساب معنا، يجب عليك تزويدنا بمعلومات دقيقة وكاملة وحديثة في جميع الأوقات. قد يؤدي عدم القيام بذلك إلى خرق الشروط، مما قد يؤدي إلى الإنهاء الفوري لحسابك على خدمتنا.",
+        "terms.accounts.safeguard": "أنت مسؤول عن حماية كلمة المرور التي تستخدمها للوصول إلى الخدمة وعن أي أنشطة أو إجراءات تتم بموجب كلمة المرور الخاصة بك.",
+        "terms.accounts.disclose": "أنت توافق على عدم الكشف عن كلمة المرور الخاصة بك لأي طرف ثالث. يجب عليك إخطارنا على الفور عند علمك بأي خرق للأمان أو استخدام غير مصرح به لحسابك.",
+        
+        "terms.ip.title": "٤. الملكية الفكرية",
+        "terms.ip.text": "الخدمة والمحتوى الأصلي والميزات والوظائف الخاصة بها هي وستظل الملكية الحصرية لشركة الفا إكس 10 والمرخصين لها. الخدمة محمية بموجب حقوق الطبع والنشر والعلامات التجارية وقوانين أخرى في كل من الولايات المتحدة والدول الأجنبية. لا يجوز استخدام علاماتنا التجارية وزي التجارة فيما يتعلق بأي منتج أو خدمة دون الموافقة الخطية المسبقة من الفا إكس 10.",
+        
+        "terms.content.title": "٥. محتوى المستخدم",
+        "terms.content.responsibility": "قد تسمح خدمتنا لك بنشر أو ربط أو تخزين أو مشاركة أو إتاحة معلومات معينة أو نص أو رسومات أو مقاطع فيديو أو مواد أخرى (\"المحتوى\"). أنت مسؤول عن المحتوى الذي تنشره على الخدمة، بما في ذلك قانونيته وموثوقيته وملاءمته.",
+        "terms.content.license": "من خلال نشر المحتوى على الخدمة، فإنك تمنحنا الحق والترخيص لاستخدام وتعديل وأداء علنًا وعرض علنًا ونسخ وتوزيع هذا المحتوى على الخدمة ومن خلالها. تحتفظ بأي وكل حقوقك في أي محتوى تقدمه أو تنشره أو تعرضه على الخدمة أو من خلالها وأنت مسؤول عن حماية تلك الحقوق.",
+        "terms.content.warranty": "أنت تقر وتضمن أن: (1) المحتوى ملكك (أنت تمتلكه) أو لديك الحق في استخدامه ومنحنا الحقوق والترخيص كما هو منصوص عليه في هذه الشروط، و (2) نشر المحتوى الخاص بك على الخدمة أو من خلالها لا ينتهك حقوق الخصوصية، حقوق الدعاية، حقوق الطبع والنشر، حقوق العقود أو أي حقوق أخرى لأي شخص.",
+        
+        "terms.links.title": "٦. الروابط إلى مواقع أخرى",
+        "terms.links.intro": "قد تحتوي خدمتنا على روابط لمواقع ويب أو خدمات تابعة لجهات خارجية لا تملكها أو تتحكم فيها الفا إكس 10.",
+        "terms.links.responsibility": "لا تتحكم الفا إكس 10 ولا تتحمل أي مسؤولية عن المحتوى أو سياسات الخصوصية أو الممارسات الخاصة بأي مواقع ويب أو خدمات تابعة لجهات خارجية. أنت تقر وتوافق على أن الفا إكس 10 لن تكون مسؤولة أو ملتزمة، بشكل مباشر أو غير مباشر، عن أي ضرر أو خسارة سببها أو يُزعم أنها ناتجة عن أو مرتبطة باستخدام أو الاعتماد على أي محتوى أو سلع أو خدمات متاحة على أو من خلال أي مواقع أو خدمات من هذا القبيل.",
+        "terms.links.advice": "ننصحك بشدة بقراءة الشروط والأحكام وسياسات الخصوصية لأي مواقع ويب أو خدمات تابعة لجهات خارجية تزورها.",
+        
+        "terms.termination.title": "٧. الإنهاء",
+        "terms.termination.suspend": "قد ننهي أو نعلق حسابك على الفور، دون إشعار مسبق أو مسؤولية، لأي سبب من الأسباب، بما في ذلك على سبيل المثال لا الحصر إذا خالفت الشروط.",
+        "terms.termination.cease": "عند الإنهاء، سيتوقف حقك في استخدام الخدمة على الفور. إذا كنت ترغب في إنهاء حسابك، فيمكنك ببساطة التوقف عن استخدام الخدمة.",
+        
+        "terms.liability.title": "٨. حدود المسؤولية",
+        "terms.liability.text": "لن تكون الفا إكس 10، ولا مديريها أو موظفيها أو شركائها أو وكلائها أو مورديها أو الشركات التابعة لها، مسؤولة بأي حال من الأحوال عن أي أضرار غير مباشرة أو عرضية أو خاصة أو تبعية أو عقابية، بما في ذلك على سبيل المثال لا الحصر، فقدان الأرباح أو البيانات أو الاستخدام أو الشهرة التجارية أو خسائر غير ملموسة أخرى، ناتجة عن (1) وصولك إلى أو استخدامك للخدمة أو عدم القدرة على الوصول إليها أو استخدامها؛ (2) أي سلوك أو محتوى لأي طرف ثالث على الخدمة؛ (3) أي محتوى تم الحصول عليه من الخدمة؛ و (4) الوصول غير المصرح به أو الاستخدام أو التغيير في إرساليك أو محتواك، سواء كان ذلك بناءً على ضمان أو عقد أو ضرر (بما في ذلك الإهمال) أو أي نظرية قانونية أخرى، سواء تم إبلاغنا بإمكانية حدوث مثل هذا الضرر أم لا.",
+        
+        "terms.disclaimer.title": "٩. إخلاء المسؤولية",
+        "terms.disclaimer.risk": "استخدامك للخدمة يكون على مسؤوليتك الخاصة. يتم تقديم الخدمة \"كما هي\" و\"كما هي متاحة\". يتم تقديم الخدمة بدون ضمانات من أي نوع، سواء كانت صريحة أو ضمنية، بما في ذلك، على سبيل المثال لا الحصر، الضمانات الضمنية للتسويق والملاءمة لغرض معين وعدم الانتهاك أو مسار الأداء.",
+        "terms.disclaimer.warranty": "لا تضمن الفا إكس 10 أو الشركات التابعة لها أو المرخصين لها أن أ) الخدمة ستعمل بدون انقطاع أو تكون آمنة أو متاحة في أي وقت أو موقع معين؛ ب) سيتم تصحيح أي أخطاء أو عيوب؛ ج) الخدمة خالية من الفيروسات أو المكونات الضارة الأخرى؛ أو د) نتائج استخدام الخدمة ستلبي متطلباتك.",
+        
+        "terms.governing.title": "١٠. القانون الحاكم",
+        "terms.governing.law": "تخضع هذه الشروط وتُفسر وفقًا لقوانين الولايات المتحدة، بغض النظر عن أحكام تنازع القوانين الخاصة بها.",
+        "terms.governing.waiver": "لا يعتبر عدم تطبيقنا لأي حق أو حكم من هذه الشروط تنازلاً عن تلك الحقوق. إذا اعتبر أي حكم من أحكام هذه الشروط غير صالح أو غير قابل للتنفيذ من قبل محكمة، فإن الأحكام المتبقية من هذه الشروط ستظل سارية المفعول.",
+        
+        "terms.changes.title": "١١. التغييرات على هذه الشروط",
+        "terms.changes.modify": "نحتفظ بالحق، وفقًا لتقديرنا الخاص، في تعديل أو استبدال هذه الشروط في أي وقت. إذا كان التنقيح جوهريًا، فسنحاول تقديم إشعار بمدة ٣٠ يومًا على الأقل قبل دخول أي شروط جديدة حيز التنفيذ. ما يشكل تغييرًا جوهريًا سيتم تحديده وفقًا لتقديرنا الخاص.",
+        "terms.changes.agreement": "من خلال الاستمرار في الوصول إلى خدمتنا أو استخدامها بعد أن تصبح هذه المراجعات سارية، فإنك توافق على الالتزام بالشروط المنقحة. إذا كنت لا توافق على الشروط الجديدة، فيرجى التوقف عن استخدام الخدمة.",
+        
+        "terms.contact.title": "١٢. اتصل بنا",
+        "terms.contact.questions": "إذا كان لديك أي أسئلة حول هذه الشروط، فيرجى الاتصال بنا:",
+        "terms.contact.email": "عبر البريد الإلكتروني: info@alfax10.com",
+        "terms.contact.phone": "عبر الهاتف: +1 (555) 123-4567",
+        "terms.contact.mail": "عبر البريد: 123 شارع التقنية، جناح 200، مدينة الابتكار"
     },
     ar: {
         // Meta
@@ -583,7 +886,7 @@ const translations = {
         "nav.about": "من نحن",
         "nav.services": "خدماتنا",
         "nav.projects": "مشاريعنا",
-        "nav.testimonials": "آراء العملاء",
+        "nav.testimonials": "آراء عملائنا",
         "nav.contact": "اتصل بنا",
         
         // Hero Section
@@ -716,108 +1019,139 @@ const translations = {
         "privacy.title": "سياسة الخصوصية - الفا إكس 10",
         "privacy.description": "سياسة الخصوصية الفا إكس 10 - تعرف على كيفية جمع واستخدام وحماية معلوماتك الشخصية.",
         "privacy.heading": "سياسة الخصوصية",
+        "privacy.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
         
-        "terms.title": "شروط الخدمة - الفا إكس 10",
-        "terms.description": "شروط الخدمة الفا إكس 10 - اقرأ عن الشروط والأحكام لاستخدام خدماتنا.",
-        "terms.heading": "شروط الخدمة",
+        // Privacy Policy detailed translations
+        "privacy.intro.title": "١. مقدمة",
+        "privacy.intro.text": "مرحبًا بكم في الفا إكس 10 (\"نحن\" أو \"الخاص بنا\"). نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. ستخبرك سياسة الخصوصية هذه عن كيفية اعتنائنا ببياناتك الشخصية عند زيارتك لموقعنا الإلكتروني وإخبارك عن حقوق الخصوصية الخاصة بك وكيف يحميك القانون.",
         
+        "privacy.collect.title": "٢. المعلومات التي نجمعها",
+        "privacy.collect.personal.title": "٢.١ المعلومات الشخصية",
+        "privacy.collect.personal.intro": "قد نجمع الأنواع التالية من المعلومات الشخصية:",
+        "privacy.collect.personal.identity": "بيانات الهوية: تشمل الاسم الأول واسم العائلة واسم المستخدم أو معرف مماثل.",
+        "privacy.collect.personal.contact": "بيانات الاتصال: تشمل عنوان الفواتير وعنوان التسليم وعنوان البريد الإلكتروني وأرقام الهواتف.",
+        "privacy.collect.personal.transaction": "بيانات المعاملات: تشمل تفاصيل حول المدفوعات من وإليك وتفاصيل أخرى عن المنتجات والخدمات التي اشتريتها منا.",
+        "privacy.collect.personal.technical": "البيانات التقنية: تشمل عنوان بروتوكول الإنترنت (IP)، وبيانات تسجيل الدخول الخاصة بك، ونوع وإصدار المتصفح، وإعداد المنطقة الزمنية والموقع، وأنواع وإصدارات المكونات الإضافية للمتصفح، ونظام التشغيل والمنصة، وتقنيات أخرى على الأجهزة التي تستخدمها للوصول إلى هذا الموقع.",
+        "privacy.collect.personal.profile": "بيانات الملف الشخصي: تشمل اسم المستخدم وكلمة المرور الخاصة بك، والمشتريات أو الطلبات التي قمت بها، واهتماماتك، وتفضيلاتك، والتعليقات واستجابات الاستطلاع.",
+        "privacy.collect.personal.usage": "بيانات الاستخدام: تشمل معلومات حول كيفية استخدامك لموقعنا الإلكتروني ومنتجاتنا وخدماتنا.",
+        "privacy.collect.personal.marketing": "بيانات التسويق والاتصالات: تشمل تفضيلاتك في تلقي التسويق منا ومن الأطراف الثالثة وتفضيلات الاتصال الخاصة بك.",
+        
+        "privacy.collect.cookies.title": "٢.٢ ملفات تعريف الارتباط والتقنيات المماثلة",
+        "privacy.collect.cookies.text": "نستخدم ملفات تعريف الارتباط وتقنيات التتبع المماثلة لتتبع النشاط على خدمتنا والاحتفاظ بمعلومات معينة. لمزيد من التفاصيل، يرجى الاطلاع على <a href=\"cookie-policy.html\">سياسة ملفات تعريف الارتباط</a>.",
+        
+        "privacy.usage.title": "٣. كيف نستخدم معلوماتك",
+        "privacy.usage.intro": "نستخدم معلوماتك الشخصية لهذه الأغراض:",
+        "privacy.usage.service": "لتوفير وصيانة خدمتنا",
+        "privacy.usage.notifications": "لإرسال إشعارات إليك",
+        "privacy.usage.feedback": "لتوفير دعم العملاء والتعليقات",
+        "privacy.usage.updates": "لتزويدك بالتحديثات والعروض الخاصة",
+        "privacy.usage.monitor": "لمراقبة استخدام خدمتنا",
+        "privacy.usage.technical": "لاكتشاف ومنع ومعالجة المشكلات التقنية",
+        
+        "privacy.sharing.title": "٤. مشاركة معلوماتك",
+        "privacy.sharing.text": "قد نشارك معلوماتك مع:",
+        "privacy.sharing.providers": "مقدمي الخدمات: لمراقبة وتحليل استخدام خدمتنا وتقديم خدمة العملاء.",
+        "privacy.sharing.affiliates": "الشركات التابعة: قد نشارك معلوماتك مع شركاتنا التابعة، وفي هذه الحالة سنطلب من هؤلاء التابعين احترام سياسة الخصوصية هذه.",
+        "privacy.sharing.business": "شركاء الأعمال: قد نشارك معلوماتك مع شركاء أعمالنا لتقديم منتجات وخدمات معينة لك.",
+        "privacy.sharing.legal": "الالتزامات القانونية: قد نكشف عن معلوماتك الشخصية بحسن نية أننا ملزمون بالقيام بذلك بموجب القانون.",
+        
+        "privacy.security.title": "٥. أمن البيانات",
+        "privacy.security.text": "أمن معلوماتك مهم بالنسبة لنا، ولكن تذكر أنه لا توجد طريقة نقل عبر الإنترنت أو طريقة تخزين إلكتروني آمنة 100٪. بينما نسعى جاهدين لاستخدام وسائل مقبولة تجاريًا لحماية معلوماتك الشخصية، لا يمكننا ضمان أمنها المطلق.",
+        
+        "privacy.childrens.title": "٦. خصوصية الأطفال",
+        "privacy.childrens.text": "لا نتعامل عن قصد مع أي شخص دون سن 18 عامًا. لا نجمع عن قصد معلومات تعريف شخصية من الأطفال دون سن 18 عامًا. إذا كنت أحد الوالدين أو الوصي وكنت تعلم أن طفلك قد زودنا ببيانات شخصية، فيرجى الاتصال بنا.",
+        
+        "privacy.changes.title": "٧. التغييرات على سياسة الخصوصية هذه",
+        "privacy.changes.text": "قد نقوم بتحديث سياسة الخصوصية الخاصة بنا من وقت لآخر. سنخطرك بأي تغييرات عن طريق نشر سياسة الخصوصية الجديدة على هذه الصفحة. ننصحك بمراجعة سياسة الخصوصية هذه بشكل دوري لأي تغييرات.",
+        
+        "privacy.contact.title": "٨. اتصل بنا",
+        "privacy.contact.text": "إذا كانت لديك أي أسئلة حول سياسة الخصوصية هذه، يرجى الاتصال بنا:",
+        "privacy.contact.email": "بالبريد الإلكتروني: info@alfax10.com",
+        "privacy.contact.phone": "بالهاتف: +1 (555) 123-4567",
+        "privacy.contact.mail": "بالبريد العادي: 123 شارع التكنولوجيا، جناح 200، مدينة الابتكار",
+
+        // Additional privacy policy translations
+        "privacy.usage.notify": "لإخطارك بالتغييرات في خدمتنا",
+        "privacy.usage.account": "للسماح لك بالمشاركة في الميزات التفاعلية لخدمتنا عند اختيارك القيام بذلك",
+        "privacy.usage.support": "لتقديم دعم العملاء",
+        "privacy.usage.analyze": "لجمع التحليلات أو المعلومات القيمة حتى نتمكن من تحسين خدمتنا",
+        "privacy.usage.detect": "لاكتشاف المشكلات التقنية ومنعها ومعالجتها",
+        "privacy.usage.business": "لتزويدك بالأخبار والعروض الخاصة والمعلومات العامة حول السلع والخدمات والفعاليات الأخرى التي نقدمها",
+        
+        "privacy.retention.title": "٥. الاحتفاظ بالبيانات",
+        "privacy.retention.text": "سنحتفظ ببياناتك الشخصية فقط طالما كان ذلك ضروريًا لتحقيق الأغراض التي جمعناها من أجلها، بما في ذلك لأغراض تلبية أي متطلبات قانونية أو محاسبية أو إعداد تقارير.",
+        
+        "privacy.rights.title": "٦. حقوقك",
+        "privacy.rights.intro": "في ظل ظروف معينة، لديك حقوق بموجب قوانين حماية البيانات فيما يتعلق ببياناتك الشخصية، بما في ذلك:",
+        "privacy.rights.access": "طلب الوصول إلى بياناتك الشخصية",
+        "privacy.rights.correction": "طلب تصحيح بياناتك الشخصية",
+        "privacy.rights.erasure": "طلب محو بياناتك الشخصية",
+        "privacy.rights.object": "الاعتراض على معالجة بياناتك الشخصية",
+        "privacy.rights.restriction": "طلب تقييد معالجة بياناتك الشخصية",
+        "privacy.rights.transfer": "طلب نقل بياناتك الشخصية",
+        "privacy.rights.withdraw": "الحق في سحب الموافقة",
+        
+        "privacy.thirdparty.title": "٧. روابط الطرف الثالث",
+        "privacy.thirdparty.text": "قد تحتوي خدمتنا على روابط لمواقع أخرى لا نديرها. إذا نقرت على رابط جهة خارجية، فسيتم توجيهك إلى موقع تلك الجهة الخارجية. نحن ننصحك بشدة بمراجعة سياسة الخصوصية لكل موقع تزوره.",
+        
+        // Cookie Policy translations
         "cookies.title": "سياسة ملفات تعريف الارتباط - الفا إكس 10",
         "cookies.description": "سياسة ملفات تعريف الارتباط الفا إكس 10 - تعرف على كيفية استخدامنا لملفات تعريف الارتباط والتقنيات المماثلة على موقعنا.",
         "cookies.heading": "سياسة ملفات تعريف الارتباط",
-    }
-};
-
-/**
- * Language Switcher
- * Handles language toggle and content translation
- */
-/**
- * Language Switcher
- * Handles language toggle and content translation
- */
-function initLanguageSwitcher() {
-    const langToggle = document.getElementById('lang-toggle');
-    const htmlElement = document.documentElement;
-    
-    if (!langToggle) {
-        console.error('Language toggle button not found!');
-        return;
-    }
-    
-    console.log('Language switcher initialized');
-    
-    // Check if a language preference is saved in localStorage
-    const savedLang = localStorage.getItem('alfax10_language') || 'en';
-    
-    // Set initial language
-    setLanguage(savedLang);
-    
-    // Toggle language on button click
-    langToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('Language toggle clicked');
-        const currentLang = htmlElement.getAttribute('lang') || 'en';
-        const newLang = currentLang === 'en' ? 'ar' : 'en';
-        console.log(`Switching language from ${currentLang} to ${newLang}`);
-        setLanguage(newLang);
-    });
-    
-    /**
-     * Set the website language
-     * @param {string} lang - The language code ('en' or 'ar')
-     */
-    function setLanguage(lang) {
-        // Update HTML attributes
-        htmlElement.setAttribute('lang', lang);
-        htmlElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        "cookies.lastUpdated": "آخر تحديث: ٢٩ يونيو ٢٠٢٥",
         
-        // Update toggle button text (ensure correct order)
-        langToggle.textContent = lang === 'en' ? 'EN | AR' : 'AR | EN';
+        // Cookie Policy detailed translations
+        "cookies.intro.title": "١. ما هي ملفات تعريف الارتباط",
+        "cookies.intro.text": "ملفات تعريف الارتباط هي قطع صغيرة من النص يتم إرسالها إلى متصفح الويب الخاص بك بواسطة موقع الويب الذي تزوره. يتم تخزين ملف تعريف الارتباط في متصفح الويب الخاص بك ويسمح للخدمة أو لطرف ثالث بالتعرف عليك وجعل زيارتك التالية أسهل وجعل الخدمة أكثر فائدة لك.",
+        "cookies.intro.types": "يمكن أن تكون ملفات تعريف الارتباط \"دائمة\" أو ملفات تعريف ارتباط \"الجلسة\". تظل ملفات تعريف الارتباط الدائمة على جهاز الكمبيوتر الشخصي أو الجهاز المحمول عندما تكون غير متصل بالإنترنت، بينما يتم حذف ملفات تعريف ارتباط الجلسة بمجرد إغلاق متصفح الويب.",
         
-        // Fix mobile menu position for RTL
-        const navLinks = document.querySelector('.nav-links');
-        if (navLinks) {
-            if (navLinks.classList.contains('active')) {
-                // If menu is currently active, reset its position before changing direction
-                navLinks.classList.remove('active');
-                setTimeout(() => {
-                    if (document.getElementById('menu-toggle').classList.contains('active')) {
-                        navLinks.classList.add('active');
-                    }
-                }, 10);
-            }
-        }
+        "cookies.usage.title": "٢. كيف تستخدم الفا إكس 10 ملفات تعريف الارتباط",
+        "cookies.usage.place": "عند استخدام الخدمة والوصول إليها، قد نضع عددًا من ملفات تعريف الارتباط في متصفح الويب الخاص بك.",
+        "cookies.usage.purposes": "نستخدم ملفات تعريف الارتباط للأغراض التالية:",
+        "cookies.usage.functions": "لتمكين وظائف معينة من الخدمة",
+        "cookies.usage.analytics": "لتوفير التحليلات",
+        "cookies.usage.preferences": "لتخزين تفضيلاتك",
+        "cookies.usage.ads": "لتمكين تسليم الإعلانات، بما في ذلك الإعلانات السلوكية",
+        "cookies.usage.types": "نستخدم كلاً من ملفات تعريف ارتباط الجلسة وملفات تعريف الارتباط الدائمة على الخدمة ونستخدم أنواعًا مختلفة من ملفات تعريف الارتباط لتشغيل الخدمة:",
+        "cookies.usage.essential": "<strong>ملفات تعريف الارتباط الأساسية.</strong> قد نستخدم ملفات تعريف الارتباط الأساسية للمصادقة على المستخدمين ومنع الاستخدام الاحتيالي لحسابات المستخدمين.",
+        "cookies.usage.preferences": "<strong>ملفات تعريف ارتباط التفضيلات.</strong> قد نستخدم ملفات تعريف ارتباط التفضيلات لتذكر المعلومات التي تغير الطريقة التي تتصرف بها الخدمة أو تبدو، مثل تفضيل اللغة أو المنطقة التي أنت فيها.",
+        "cookies.usage.analytics": "<strong>ملفات تعريف ارتباط التحليلات.</strong> قد نستخدم ملفات تعريف ارتباط التحليلات لتتبع المعلومات حول كيفية استخدام الخدمة حتى نتمكن من إجراء تحسينات. قد نستخدم أيضًا ملفات تعريف ارتباط التحليلات لاختبار إعلانات جديدة أو صفحات أو ميزات أو وظائف جديدة للخدمة لمعرفة كيفية تفاعل مستخدمينا معها.",
+        "cookies.usage.marketing": "<strong>ملفات تعريف ارتباط التسويق.</strong> تتبع أنواع ملفات تعريف الارتباط هذه عادات التصفح لديك لتمكيننا من عرض إعلانات من المرجح أن تكون ذات أهمية بالنسبة لك. تستخدم ملفات تعريف الارتباط هذه معلومات حول تاريخ التصفح لديك لتجميعك مع مستخدمين آخرين لديهم اهتمامات مماثلة. بناءً على تلك المعلومات، وبإذننا، يمكن للمعلنين من جهات خارجية وضع ملفات تعريف ارتباط لتمكينهم من عرض إعلانات نعتقد أنها ذات صلة باهتماماتك أثناء وجودك على مواقع ويب تابعة لجهات خارجية.",
         
-        try {
-            // Update all translatable elements
-            const elements = document.querySelectorAll('[data-i18n]');
-            console.log(`Found ${elements.length} translatable elements`);
-            
-            elements.forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    // Handle special cases for elements like meta title
-                    if (element.tagName === 'TITLE') {
-                        element.textContent = translations[lang][key];
-                    } else if (element.tagName === 'META' && element.hasAttribute('content')) {
-                        element.setAttribute('content', translations[lang][key]);
-                    } else {
-                        element.textContent = translations[lang][key];
-                    }
-                } else {
-                    console.warn(`Translation not found for key: ${key} in language: ${lang}`);
-                }
-            });
-            
-            // Save language preference
-            localStorage.setItem('alfax10_language', lang);
-            
-            // Dispatch an event for other components that might need to react to language change
-            document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
-            
-            console.log(`Language successfully changed to ${lang}`);
-        } catch (error) {
-            console.error('Error changing language:', error);
-        }
+        "cookies.thirdparty.title": "٣. ملفات تعريف ارتباط الطرف الثالث",
+        "cookies.thirdparty.text1": "بالإضافة إلى ملفات تعريف الارتباط الخاصة بنا، قد نستخدم أيضًا ملفات تعريف ارتباط مختلفة من جهات خارجية للإبلاغ عن إحصائيات استخدام الخدمة، وتقديم الإعلانات على الخدمة ومن خلالها، وما إلى ذلك.",
+        "cookies.thirdparty.text2": "تشمل هذه الخدمات التابعة لجهات خارجية على سبيل المثال لا الحصر:",
+        "cookies.thirdparty.google": "جوجل أناليتكس",
+        "cookies.thirdparty.ads": "إعلانات جوجل",
+        "cookies.thirdparty.fb": "بيكسل فيسبوك",
+        "cookies.thirdparty.linkedin": "لينكد إن إنسايتس",
+        "cookies.thirdparty.hotjar": "هوتجار",
+        
+        "cookies.choices.title": "٤. ما هي خياراتك بخصوص ملفات تعريف الارتباط",
+        "cookies.choices.text1": "إذا كنت ترغب في حذف ملفات تعريف الارتباط أو توجيه متصفح الويب الخاص بك لحذف ملفات تعريف الارتباط أو رفضها، فيرجى زيارة صفحات المساعدة الخاصة بمتصفح الويب الخاص بك.",
+        "cookies.choices.text2": "يرجى ملاحظة، مع ذلك، أنه إذا قمت بحذف ملفات تعريف الارتباط أو رفضت قبولها، فقد لا تتمكن من استخدام جميع الميزات التي نقدمها، وقد لا تتمكن من تخزين تفضيلاتك، وقد لا تعرض بعض صفحاتنا بشكل صحيح.",
+        
+        "cookies.manage.title": "٤.١ كيفية إدارة ملفات تعريف الارتباط في متصفحك",
+        "cookies.manage.chrome": "لمتصفح الويب كروم، يرجى زيارة هذه الصفحة من جوجل: <a href=\"https://support.google.com/accounts/answer/32050\" target=\"_blank\">https://support.google.com/accounts/answer/32050</a>",
+        "cookies.manage.ie": "لمتصفح الويب إنترنت إكسبلورر، يرجى زيارة هذه الصفحة من مايكروسوفت: <a href=\"https://support.microsoft.com/help/17442\" target=\"_blank\">https://support.microsoft.com/help/17442</a>",
+        "cookies.manage.firefox": "لمتصفح الويب فايرفوكس، يرجى زيارة هذه الصفحة من موزيلا: <a href=\"https://support.mozilla.org/kb/delete-cookies-remove-info-websites-stored\" target=\"_blank\">https://support.mozilla.org/kb/delete-cookies-remove-info-websites-stored</a>",
+        "cookies.manage.safari": "لمتصفح الويب سفاري، يرجى زيارة هذه الصفحة من أبل: <a href=\"https://support.apple.com/guide/safari/manage-cookies-sfri11471\" target=\"_blank\">https://support.apple.com/guide/safari/manage-cookies-sfri11471</a>",
+        
+        "cookies.contact.title": "٧. اتصل بنا",
+        "cookies.contact.questions": "إذا كان لديك أي أسئلة حول ملفات تعريف الارتباط الخاصة بنا، فلا تتردد في الاتصال بنا.",
+        "cookies.contact.text": "إذا كان لديك أي أسئلة حول سياسة ملفات تعريف الارتباط هذه، يمكنك الاتصال بنا:",
+        "cookies.contact.email": "بالبريد الإلكتروني: info@alfax10.com",
+        "cookies.contact.phone": "بالهاتف: +1 (555) 123-4567",
+        "cookies.contact.mail": "بالبريد العادي: 123 شارع التكنولوجيا، جناح 200، مدينة الابتكار",
+        
+        "cookies.consent.title": "٥. موافقة ملفات تعريف الارتباط",
+        "cookies.consent.text1": "عند زيارتك لموقعنا لأول مرة، سنطلب موافقتك على استخدامنا لملفات تعريف الارتباط. يمكنك اختيار قبول جميع ملفات تعريف الارتباط، أو رفض ملفات تعريف الارتباط غير الأساسية، أو إدارة تفضيلاتك بشكل فردي.",
+        "cookies.consent.text2": "يمكنك تغيير تفضيلات ملفات تعريف الارتباط في أي وقت من خلال النقر على رابط \"إعدادات ملفات تعريف الارتباط\" في تذييل موقعنا الإلكتروني.",
+        
+        "cookies.changes.title": "٦. التغييرات على سياسة ملفات تعريف الارتباط هذه",
+        "cookies.changes.text1": "قد نقوم بتحديث سياسة ملفات تعريف الارتباط الخاصة بنا من وقت لآخر. سنخطرك بأي تغييرات عن طريق نشر سياسة ملفات تعريف الارتباط الجديدة على هذه الصفحة وتحديث تاريخ \"آخر تحديث\" في أعلى سياسة ملفات تعريف الارتباط هذه.",
+        "cookies.changes.text2": "ننصحك بمراجعة سياسة ملفات تعريف الارتباط هذه بشكل دوري لمعرفة أي تغييرات. تصبح التغييرات على سياسة ملفات تعريف الارتباط هذه سارية عندما يتم نشرها على هذه الصفحة.",
+        
+        "cookies.manage.others": "لأي متصفح ويب آخر، يرجى زيارة الصفحات الرسمية لمتصفح الويب الخاص بك."
     }
 }
