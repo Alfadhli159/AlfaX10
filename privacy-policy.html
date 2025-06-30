@@ -231,7 +231,7 @@
                     const elements = document.querySelectorAll('[data-i18n]');
                     elements.forEach(element => {
                         const key = element.getAttribute('data-i18n');
-                        if (translations[currentLang] && translations[currentLang][key]) {
+                        if (translations && translations[currentLang] && translations[currentLang][key]) {
                             // Apply translation
                             if (element.tagName === 'TITLE') {
                                 element.textContent = translations[currentLang][key];
@@ -259,10 +259,12 @@
                         
                         console.log(`Changing language from ${currentLang} to ${newLang}`);
                         
-                        // Reload the page to ensure all translations are properly applied
-                        setTimeout(() => {
-                            location.reload();
-                        }, 100);
+                        // Instead of reloading the page, redirect with a language parameter to force refresh
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('lang', newLang);
+                        currentUrl.searchParams.set('t', Date.now()); // Add timestamp to prevent caching
+                        
+                        window.location.href = currentUrl.toString();
                     });
                 }
             }
