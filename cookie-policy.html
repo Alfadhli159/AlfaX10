@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <!-- Set language based on stored preference right away -->
+    <!-- Set language based on stored preference or URL parameter right away -->
     <script>
-        // Set language based on stored preference right away
-        const savedLang = localStorage.getItem('alfax10_language') || 'en';
-        document.documentElement.setAttribute('lang', savedLang);
-        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+        // Check URL for language param
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        
+        // If lang=ar is in URL, force Arabic
+        if (urlLang === 'ar') {
+            localStorage.setItem('alfax10_language', 'ar');
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            // Add RTL class to body as soon as possible
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.add('rtl');
+                console.log('Arabic language forced from URL parameter');
+            });
+        } 
+        // If lang=en is in URL, force English
+        else if (urlLang === 'en') {
+            localStorage.setItem('alfax10_language', 'en');
+            document.documentElement.setAttribute('lang', 'en');
+            document.documentElement.setAttribute('dir', 'ltr');
+            // Ensure RTL class is removed
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.remove('rtl');
+                console.log('English language forced from URL parameter');
+            });
+        }
+        else {
+            // Otherwise check localStorage
+            const savedLang = localStorage.getItem('alfax10_language') || 'en';
+            document.documentElement.setAttribute('lang', savedLang);
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+            
+            // Add RTL class for Arabic, ensure it's removed for English
+            document.addEventListener('DOMContentLoaded', function() {
+                if (savedLang === 'ar') {
+                    document.body.classList.add('rtl');
+                    console.log('Arabic language set from localStorage');
+                } else {
+                    document.body.classList.remove('rtl');
+                    console.log('English language set from localStorage');
+                }
+            });
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

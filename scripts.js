@@ -458,8 +458,24 @@ function initLanguageSwitcher() {
     const langToggle = document.getElementById('lang-toggle');
     if (!langToggle) return;
     
+    // If a page has set this global flag, don't initialize the default language switcher
+    // This allows legal pages to have their own custom language switcher
+    if (window.disableDefaultLanguageSwitcher) {
+        console.log('Default language switcher disabled by page');
+        return;
+    }
+    
     // Get saved language preference or default to English
     let currentLang = localStorage.getItem('alfax10_language') || 'en';
+    
+    // Check URL parameters for language override
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get('lang');
+    if (urlLang === 'ar' || urlLang === 'en') {
+        currentLang = urlLang;
+        // Update localStorage to match URL
+        localStorage.setItem('alfax10_language', currentLang);
+    }
     
     // Apply the language settings on page load
     applyLanguage(currentLang);
@@ -494,12 +510,19 @@ function initLanguageSwitcher() {
                 document.body.classList.remove('rtl');
             }
             
-            // Add language parameter to URL for more reliable language setting during page reload
+            // Add language parameter and timestamp to URL for more reliable language setting during page reload
             const currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set('lang', newLang);
+            currentUrl.searchParams.set('t', Date.now()); // Add timestamp to prevent caching
             
-            // Reload the page with the language parameter
-            window.location.href = currentUrl.toString();
+            // Show visual feedback that something is happening
+            document.body.style.opacity = '0.5';
+            document.body.style.transition = 'opacity 0.3s';
+            
+            // Reload the page with the language parameter after a short delay
+            setTimeout(() => {
+                window.location.href = currentUrl.toString();
+            }, 300);
         } else {
             // For normal pages, apply translations without reload
             applyLanguage(newLang);

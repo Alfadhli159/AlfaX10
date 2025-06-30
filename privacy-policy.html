@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <!-- Set language based on stored preference right away -->
+    <!-- Set language based on stored preference or URL parameter right away -->
     <script>
-        // Set language based on stored preference right away
-        const savedLang = localStorage.getItem('alfax10_language') || 'en';
-        document.documentElement.setAttribute('lang', savedLang);
-        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+        // Check URL for language param
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        
+        // If lang=ar is in URL, force Arabic
+        if (urlLang === 'ar') {
+            localStorage.setItem('alfax10_language', 'ar');
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            // Add RTL class to body as soon as possible
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.add('rtl');
+                console.log('Arabic language forced from URL parameter');
+            });
+        } 
+        // If lang=en is in URL, force English
+        else if (urlLang === 'en') {
+            localStorage.setItem('alfax10_language', 'en');
+            document.documentElement.setAttribute('lang', 'en');
+            document.documentElement.setAttribute('dir', 'ltr');
+            // Ensure RTL class is removed
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.remove('rtl');
+                console.log('English language forced from URL parameter');
+            });
+        }
+        else {
+            // Otherwise check localStorage
+            const savedLang = localStorage.getItem('alfax10_language') || 'en';
+            document.documentElement.setAttribute('lang', savedLang);
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+            
+            // Add RTL class for Arabic, ensure it's removed for English
+            document.addEventListener('DOMContentLoaded', function() {
+                if (savedLang === 'ar') {
+                    document.body.classList.add('rtl');
+                    console.log('Arabic language set from localStorage');
+                } else {
+                    document.body.classList.remove('rtl');
+                    console.log('English language set from localStorage');
+                }
+            });
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -207,15 +246,34 @@
             if (window.location.pathname.includes('privacy-policy.html')) {
                 console.log('Privacy Policy page detected - applying special translation fix');
                 
-                // Force re-translation if language is set to Arabic
+                // Disable the default language switcher from scripts.js
+                window.disableDefaultLanguageSwitcher = true;
+                
+                // Force re-translation after page load
                 setTimeout(() => {
-                    // Get the language from localStorage
-                    const savedLang = localStorage.getItem('alfax10_language');
-                    const currentLang = savedLang || 'en';
+                    // Get the language from localStorage or URL parameter
+                    let currentLang;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const urlLang = urlParams.get('lang');
                     
-                    // Ensure the HTML lang and dir attributes match the saved language
+                    if (urlLang === 'ar' || urlLang === 'en') {
+                        // Use URL parameter if available
+                        currentLang = urlLang;
+                    } else {
+                        // Otherwise fall back to localStorage
+                        currentLang = localStorage.getItem('alfax10_language') || 'en';
+                    }
+                    
+                    // Ensure HTML lang and dir attributes match the correct language
                     document.documentElement.setAttribute('lang', currentLang);
                     document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+                    
+                    // Add or remove RTL class
+                    if (currentLang === 'ar') {
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.body.classList.remove('rtl');
+                    }
                     
                     console.log(`Applying ${currentLang} translations to Privacy Policy page`);
                     
@@ -246,25 +304,38 @@
                             console.warn(`No ${currentLang} translation found for key: ${key}`);
                         }
                     });
-                }, 500); // Slight delay to ensure the main script has run
+                }, 200); // Reduced delay to apply translations faster
                 
-                // Add click handler for language toggle specifically for this page
+                // Override click handler for language toggle
                 const langToggle = document.getElementById('lang-toggle');
                 if (langToggle) {
-                    langToggle.addEventListener('click', function() {
-                        // Save the new language preference
+                    // Remove any existing click event listeners
+                    const newLangToggle = langToggle.cloneNode(true);
+                    langToggle.parentNode.replaceChild(newLangToggle, langToggle);
+                    
+                    // Add our custom click handler
+                    newLangToggle.addEventListener('click', function() {
+                        // Get current language
                         const currentLang = document.documentElement.getAttribute('lang');
                         const newLang = currentLang === 'en' ? 'ar' : 'en';
+                        
+                        // Save to localStorage
                         localStorage.setItem('alfax10_language', newLang);
+                        console.log(`Language preference saved: ${newLang}`);
                         
-                        console.log(`Changing language from ${currentLang} to ${newLang}`);
-                        
-                        // Instead of reloading the page, redirect with a language parameter to force refresh
+                        // Create URL with language parameter
                         const currentUrl = new URL(window.location.href);
                         currentUrl.searchParams.set('lang', newLang);
                         currentUrl.searchParams.set('t', Date.now()); // Add timestamp to prevent caching
                         
-                        window.location.href = currentUrl.toString();
+                        // Display visual feedback that something is happening
+                        document.body.style.opacity = '0.5';
+                        document.body.style.transition = 'opacity 0.3s';
+                        
+                        // Navigate to the URL with a slight delay for the visual feedback
+                        setTimeout(() => {
+                            window.location.href = currentUrl.toString();
+                        }, 300);
                     });
                 }
             }
