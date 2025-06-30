@@ -1,27 +1,208 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.alfax10.com/</loc>
-    <lastmod>2025-06-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.alfax10.com/terms-of-service.html</loc>
-    <lastmod>2025-06-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.alfax10.com/privacy-policy.html</loc>
-    <lastmod>2025-06-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.alfax10.com/cookie-policy.html</loc>
-    <lastmod>2025-06-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-</urlset>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <!-- Set language based on stored preference right away -->
+    <script>
+        // Set language based on stored preference right away
+        const savedLang = localStorage.getItem('alfax10_language') || 'en';
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sitemap | AlfaX10</title>
+    <meta name="description" content="Complete sitemap of AlfaX10 website showing all pages and sections for easy navigation.">
+    <meta name="keywords" content="sitemap, AlfaX10, website map, navigation, pages">
+    <meta name="author" content="AlfaX10 Team">
+    <link rel="canonical" href="https://www.alfax10.com/sitemap.html">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="assets/logo-AldaX10.png" as="image" type="image/png" fetchpriority="high">
+    
+    <!-- Stylesheet with media query for faster rendering -->
+    <link rel="stylesheet" href="styles.css" media="all">
+    
+    <!-- Google Fonts - Optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Sitemap | AlfaX10",
+      "description": "Complete sitemap of AlfaX10 website showing all pages and sections for easy navigation.",
+      "url": "https://www.alfax10.com/sitemap.html",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Homepage",
+            "url": "https://www.alfax10.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Terms of Service",
+            "url": "https://www.alfax10.com/terms-of-service.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Privacy Policy",
+            "url": "https://www.alfax10.com/privacy-policy.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Cookie Policy",
+            "url": "https://www.alfax10.com/cookie-policy.html"
+          }
+        ]
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image" width="150" height="50">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                </a>
+            </div>
+            <nav id="nav-menu">
+                <button id="menu-toggle" aria-label="Toggle Navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="index.html#about" data-i18n="nav.about">About</a></li>
+                    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                    <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
+                    <li><a href="index.html#contact" class="btn-contact" data-i18n="nav.contact">Contact Us</a></li>
+                    <li class="lang-switcher"><button id="lang-toggle" aria-label="Switch Language">EN | AR</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sitemap Section -->
+    <section id="sitemap" class="sitemap-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 data-i18n="sitemap.title">Sitemap</h1>
+                <div class="section-divider"></div>
+                <p data-i18n="sitemap.description">A complete map of all pages and sections on the AlfaX10 website.</p>
+            </div>
+            
+            <div class="sitemap-content">
+                <div class="sitemap-group">
+                    <h2 data-i18n="sitemap.main.title">Main Pages</h2>
+                    <ul class="sitemap-links">
+                        <li><a href="index.html" data-i18n="sitemap.main.home">Homepage</a></li>
+                        <li><a href="terms-of-service.html" data-i18n="sitemap.main.terms">Terms of Service</a></li>
+                        <li><a href="privacy-policy.html" data-i18n="sitemap.main.privacy">Privacy Policy</a></li>
+                        <li><a href="cookie-policy.html" data-i18n="sitemap.main.cookie">Cookie Policy</a></li>
+                        <li><a href="sitemap.html" data-i18n="sitemap.main.sitemap">Sitemap</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sitemap-group">
+                    <h2 data-i18n="sitemap.sections.title">Homepage Sections</h2>
+                    <ul class="sitemap-links">
+                        <li><a href="index.html#hero" data-i18n="sitemap.sections.hero">Hero Section</a></li>
+                        <li><a href="index.html#about" data-i18n="sitemap.sections.about">About Us</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.sections.services">Our Services</a></li>
+                        <li><a href="index.html#projects" data-i18n="sitemap.sections.projects">Featured Projects</a></li>
+                        <li><a href="index.html#testimonials" data-i18n="sitemap.sections.testimonials">Client Testimonials</a></li>
+                        <li><a href="index.html#contact" data-i18n="sitemap.sections.contact">Contact Form</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sitemap-group">
+                    <h2 data-i18n="sitemap.services.title">Services</h2>
+                    <ul class="sitemap-links">
+                        <li><a href="index.html#services" data-i18n="sitemap.services.mobile">Mobile App Development</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.services.website">Website Design & Development</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.services.software">Custom Software Development</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.services.tech">Tech Consultations</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.services.device">Device Installation & Maintenance</a></li>
+                        <li><a href="index.html#services" data-i18n="sitemap.services.ui">UI/UX Design</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sitemap-group">
+                    <h2 data-i18n="sitemap.projects.title">Projects</h2>
+                    <ul class="sitemap-links">
+                        <li><a href="index.html#projects" data-i18n="sitemap.projects.smart">Smart App</a></li>
+                        <li><a href="index.html#projects" data-i18n="sitemap.projects.tahaqqaq">Tahaqqaq</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy">
+                    <span class="logo-text sr-only">
+                        <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
+                    </span>
+                    <p data-i18n="footer.tagline">Creating digital experiences that transform businesses and enhance lives.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.quicklinks.title">Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                            <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
+                            <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                            <li><a href="index.html#projects" data-i18n="nav.projects">Projects</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.legal.title">Legal</h4>
+                        <ul>
+                            <li><a href="privacy-policy.html" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+                            <li><a href="terms-of-service.html" data-i18n="footer.legal.terms">Terms of Service</a></li>
+                            <li><a href="cookie-policy.html" data-i18n="footer.legal.cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2025 AlfaX10. All rights reserved.</p>
+                <p data-i18n="footer.credit">Designed and developed with <i class="fas fa-heart"></i> by AlfaX10 Team</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript - with defer attribute for better performance -->
+    <script src="scripts.js" defer></script>
+</body>
+</html>

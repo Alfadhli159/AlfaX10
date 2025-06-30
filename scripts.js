@@ -658,6 +658,109 @@ function applyTermsTranslations() {
 }
 
 /**
+ * Image Optimization Helpers
+ * Functions to help optimize images on the website
+ */
+
+/**
+ * Check if the browser supports WebP format
+ * @returns {Promise<boolean>} - Whether the browser supports WebP
+ */
+function checkWebPSupport() {
+    return new Promise(resolve => {
+        const webp = new Image();
+        webp.onload = webp.onerror = function() {
+            resolve(webp.height === 1);
+        };
+        webp.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
+    });
+}
+
+/**
+ * Replace PNG images with WebP versions when supported
+ * This function looks for PNG images and replaces them with WebP versions
+ */
+function replaceWithWebP() {
+    checkWebPSupport().then(supportsWebP => {
+        if (!supportsWebP) return;
+        
+        // Only replace if browser supports WebP
+        const images = document.querySelectorAll('img[src$=".png"]');
+        images.forEach(img => {
+            const src = img.getAttribute('src');
+            if (src) {
+                // Create the WebP version path
+                const webpSrc = src.replace('.png', '.webp');
+                
+                // Create a test image to check if the WebP version exists
+                const testImg = new Image();
+                testImg.onload = function() {
+                    // WebP version exists, replace the src
+                    img.setAttribute('src', webpSrc);
+                    console.log(`Replaced ${src} with ${webpSrc}`);
+                };
+                testImg.onerror = function() {
+                    // WebP version doesn't exist, keep the PNG
+                    console.log(`WebP version of ${src} not found`);
+                };
+                testImg.src = webpSrc;
+            }
+        });
+    });
+}
+
+/**
+ * Add width and height attributes to images missing them
+ * This helps prevent layout shifts during page load
+ */
+function addMissingImageDimensions() {
+    const images = document.querySelectorAll('img:not([width]):not([height])');
+    images.forEach(img => {
+        // If the image is loaded, use its natural dimensions
+        if (img.complete) {
+            if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                img.setAttribute('width', img.naturalWidth);
+                img.setAttribute('height', img.naturalHeight);
+                console.log(`Added dimensions to ${img.src}: ${img.naturalWidth}x${img.naturalHeight}`);
+            }
+        } else {
+            // Wait for the image to load
+            img.addEventListener('load', function() {
+                if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                    img.setAttribute('width', img.naturalWidth);
+                    img.setAttribute('height', img.naturalHeight);
+                    console.log(`Added dimensions to ${img.src}: ${img.naturalWidth}x${img.naturalHeight}`);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * Add loading="lazy" to images below the fold
+ */
+function addLazyLoading() {
+    // Select images that don't already have loading attribute and are not critical (like logo)
+    const images = document.querySelectorAll('img:not([loading]):not(.logo-image):not([src*="hero"])');
+    
+    images.forEach(img => {
+        // Add lazy loading to images
+        img.setAttribute('loading', 'lazy');
+        console.log(`Added lazy loading to ${img.src}`);
+    });
+}
+
+// Run image optimization functions when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit to ensure all other critical scripts have run
+    setTimeout(() => {
+        replaceWithWebP();
+        addMissingImageDimensions();
+        addLazyLoading();
+    }, 500);
+});
+
+/**
  * Translations Object
  * Contains all text content in both English and Arabic
  */

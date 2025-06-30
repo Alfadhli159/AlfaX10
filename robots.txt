@@ -1,3 +1,23 @@
+# AlfaX10 Website Robots.txt
+# Updated 2025-06-29
+
 User-agent: *
 Allow: /
+Disallow: /assets/
+Disallow: /Featured_Projects/
+Disallow: /copilot_prompts_alfax10.txt
+
+# Don't index error pages
+Disallow: /404.html
+
+# Allow specific directories
+Allow: /assets/services/
+Allow: /assets/testimonials/
+Allow: /Featured_Projects/*.webp
+Allow: /Featured_Projects/*.png
+
+# Sitemap location
 Sitemap: https://www.alfax10.com/sitemap.xml
+
+# Crawl-delay directive for bots to prevent server overload
+Crawl-delay: 10

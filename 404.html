@@ -14,13 +14,22 @@
     <title data-i18n="404.title">Page Not Found - AlfaX10</title>
     <meta name="description" data-i18n="404.description" content="The page you're looking for couldn't be found. Navigate back to the AlfaX10 homepage.">
     <meta name="robots" content="noindex, follow">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Fonts -->
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="assets/logo-AldaX10.png" as="image" type="image/png" fetchpriority="high">
+    
+    <!-- Stylesheet with media query for faster rendering -->
+    <link rel="stylesheet" href="styles.css" media="all">
+    
+    <!-- Google Fonts - Optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
     <style>
         .error-page {
             min-height: 80vh;
@@ -61,7 +70,7 @@
         <div class="container">
             <div class="logo">
                 <a href="index.html">
-                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image" width="150" height="50">
                     <span class="logo-text sr-only">
                         <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
@@ -105,7 +114,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy">
                     <span class="logo-text sr-only">
                         <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
@@ -140,5 +149,21 @@
 
     <!-- JavaScript - with defer attribute for better performance -->
     <script src="scripts.js" defer></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Page Not Found - AlfaX10",
+      "description": "The page you're looking for couldn't be found. Navigate back to the AlfaX10 homepage.",
+      "url": "https://www.alfax10.com/404.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "AlfaX10",
+        "url": "https://www.alfax10.com/"
+      }
+    }
+    </script>
 </body>
 </html>
