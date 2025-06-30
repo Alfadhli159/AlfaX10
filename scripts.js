@@ -996,8 +996,7 @@ const translations = {
         "terms.contact.title": "١٢. اتصل بنا",
         "terms.contact.questions": "إذا كان لديك أي أسئلة حول هذه الشروط، فيرجى الاتصال بنا:",
         "terms.contact.email": "عبر البريد الإلكتروني: info@alfax10.com",
-        "terms.contact.phone": "عبر الهاتف: +1 (555) 123-4567",
-        "terms.contact.mail": "عبر البريد: 123 شارع التقنية، جناح 200، مدينة الابتكار"
+        "terms.contact.phone": "عبر الهاتف: +966553985690"
     },
     ar: {
         // Meta
@@ -1193,8 +1192,7 @@ const translations = {
         "privacy.contact.title": "٨. اتصل بنا",
         "privacy.contact.text": "إذا كانت لديك أي أسئلة حول سياسة الخصوصية هذه، يرجى الاتصال بنا:",
         "privacy.contact.email": "بالبريد الإلكتروني: info@alfax10.com",
-        "privacy.contact.phone": "بالهاتف: +1 (555) 123-4567",
-        "privacy.contact.mail": "بالبريد العادي: 123 شارع التكنولوجيا، جناح 200، مدينة الابتكار",
+        "privacy.contact.phone": "بالهاتف: +966553985690",
 
         // Additional privacy policy translations
         "privacy.usage.notify": "لإخطارك بالتغييرات في خدمتنا",
@@ -1267,8 +1265,7 @@ const translations = {
         "cookies.contact.questions": "إذا كان لديك أي أسئلة حول ملفات تعريف الارتباط الخاصة بنا، فلا تتردد في الاتصال بنا.",
         "cookies.contact.text": "إذا كان لديك أي أسئلة حول سياسة ملفات تعريف الارتباط هذه، يمكنك الاتصال بنا:",
         "cookies.contact.email": "بالبريد الإلكتروني: info@alfax10.com",
-        "cookies.contact.phone": "بالهاتف: +1 (555) 123-4567",
-        "cookies.contact.mail": "بالبريد العادي: 123 شارع التكنولوجيا، جناح 200، مدينة الابتكار",
+        "cookies.contact.phone": "بالهاتف: +966553985690",
         
         "cookies.consent.title": "٥. موافقة ملفات تعريف الارتباط",
         "cookies.consent.text1": "عند زيارتك لموقعنا لأول مرة، سنطلب موافقتك على استخدامنا لملفات تعريف الارتباط. يمكنك اختيار قبول جميع ملفات تعريف الارتباط، أو رفض ملفات تعريف الارتباط غير الأساسية، أو إدارة تفضيلاتك بشكل فردي.",
