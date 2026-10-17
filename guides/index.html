@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="AlfaX10 free guides: build an AI assistant for your customers on Telegram and WhatsApp. أدلة AlfaX10 المجانية لبناء مساعد ذكي لعملائك.">
+<link rel="canonical" href="https://www.alfax10.com/guides/">
+<title>AlfaX10 Guides | أدلة AlfaX10</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Inter:wght@400;600;700&display=swap">
+<style>
+/* صفحة بوابة الأدلة: بطاقتان متساويتان، ثنائية اللغة تتبع اختيار الموقع (alfax10_language) */
+:root{--bg:#0b1220;--surface:#111b2e;--fg:#f2f5fa;--mute:#a9b6c9;--line:#22324d;--blue:#3b82f6;--yellow:#facc15}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 18px/1.8 'Cairo','Inter',system-ui,sans-serif;
+  padding:40px max(16px,env(safe-area-inset-left,0px)) 64px max(16px,env(safe-area-inset-right,0px))}
+main{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bar a{color:var(--yellow);text-decoration:none;font-weight:600}
+.bar button{background:transparent;border:2px solid var(--yellow);color:var(--yellow);padding:6px 14px;border-radius:8px;font:600 15px 'Inter',sans-serif;cursor:pointer}
+h1{font:800 clamp(28px,6vw,40px)/1.3 'Cairo',sans-serif;margin:0 0 6px;text-wrap:balance}
+p{margin:0;color:var(--mute)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+a.card{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;min-width:0}
+a.card:hover,a.card:focus-visible{border-color:var(--blue);outline:2px solid var(--blue);outline-offset:2px}
+a.card b{font:800 21px/1.4 'Cairo',sans-serif}
+a.card span{color:var(--mute);font-size:16px}
+a.card i{font-style:normal;font-weight:700;color:var(--yellow)}
+footer{font-size:15px;color:var(--mute)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <div class="bar"><a href="../" data-t="home">العودة إلى AlfaX10</a><button id="lang" type="button" aria-label="Switch language">EN | AR</button></div>
+  <header>
+    <h1 data-t="title">أدلتنا لبناء مساعد ذكي لعملائك</h1>
+    <p data-t="lead">اختر القناة التي تريد ربطها. الخطوات مشروحة بالعربية البسيطة.</p>
+  </header>
+  <section class="cards">
+    <a class="card" href="https://claude.ai/artifact/ALZfrJWfkdugy1VpQurFT2" target="_blank" rel="noopener">
+      <b data-t="c1t">دليل تيليجرام</b>
+      <span data-t="c1d">بوت يرد على عملائك من معلومات نشاطك، تبنيه بنفسك مع Claude.</span>
+      <i data-t="open">افتح الدليل</i>
+    </a>
+    <a class="card" href="https://claude.ai/artifact/FX8HiSCewueDaJrcV2hdnN" target="_blank" rel="noopener">
+      <b data-t="c2t">دليل واتساب</b>
+      <span data-t="c2d">اجعل Claude يساعدك في محادثات واتساب أعمالك عبر موصل Wati.</span>
+      <i data-t="open">افتح الدليل</i>
+    </a>
+  </section>
+  <footer data-t="foot">النسخة الجاهزة لم تصدر بعد. إن كنت مهتماً علّق «نعم» على بوستاتنا في تيك توك وتابع الحساب.</footer>
+</main>
+<script>
+/* الترجمات (العربية والإنجليزية) واللغة المحفوظة من الموقع الرئيسي */
+var T={
+ ar:{home:"العودة إلى AlfaX10",title:"أدلتنا لبناء مساعد ذكي لعملائك",lead:"اختر القناة التي تريد ربطها. الخطوات مشروحة بالعربية البسيطة.",
+  c1t:"دليل تيليجرام",c1d:"بوت يرد على عملائك من معلومات نشاطك، تبنيه بنفسك مع Claude.",c2t:"دليل واتساب",c2d:"اجعل Claude يساعدك في محادثات واتساب أعمالك عبر موصل Wati.",
+  open:"افتح الدليل",foot:"النسخة الجاهزة لم تصدر بعد. إن كنت مهتماً علّق «نعم» على بوستاتنا في تيك توك وتابع الحساب.",btn:"AR | EN",doc:"أدلة AlfaX10"},
+ en:{home:"Back to AlfaX10",title:"Our guides to building an AI assistant for your customers",lead:"Pick the channel you want to connect. The guides are written in Arabic.",
+  c1t:"Telegram guide (Arabic)",c1d:"A bot that answers customers from your business information, built by you with Claude.",c2t:"WhatsApp guide (Arabic)",c2d:"Let Claude help you with your WhatsApp Business chats through the Wati connector.",
+  open:"Open the guide",foot:"The ready-made version is not released yet. If you are interested, comment \"yes\" on our TikTok posts and follow the account.",btn:"EN | AR",doc:"AlfaX10 Guides"}
+};
+function lang(){try{return localStorage.getItem('alfax10_language')==='en'?'en':'ar'}catch(e){return 'ar'}}
+function apply(l){
+  document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-t]').forEach(function(e){e.textContent=T[l][e.getAttribute('data-t')]});
+  document.getElementById('lang').textContent=T[l].btn;document.title=T[l].doc;
+}
+document.getElementById('lang').addEventListener('click',function(){
+  var n=lang()==='ar'?'en':'ar';try{localStorage.setItem('alfax10_language',n)}catch(e){};apply(n);
+});
+apply(lang());
+</script>
+</body>
+</html>

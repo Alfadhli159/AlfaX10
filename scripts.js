@@ -33,9 +33,22 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    const navLinkItems = document.querySelectorAll('.nav-links li a');
-    
+    // روابط القائمة التي تُغلق القائمة عند النقر (عدا زر مركز المعرفة لأنه يفتح قائمته على الجوال)
+    const navLinkItems = document.querySelectorAll('.nav-links li a:not(.dropdown-toggle)');
+
     if (!menuToggle || !navLinks) return;
+
+    // مركز المعرفة: على الجوال يفتح/يغلق القائمة الفرعية، وعلى الحاسب يفتح صفحة الأدلة
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                e.preventDefault();
+                const item = this.parentElement;
+                const open = item.classList.toggle('open');
+                this.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+        });
+    });
     
     // Toggle menu on button click
     menuToggle.addEventListener('click', function() {
@@ -802,6 +815,10 @@ const translations = {
         "nav.services": "Services",
         "nav.projects": "Projects",
         "nav.testimonials": "Testimonials",
+        "nav.knowledge": "Knowledge Center",
+        "nav.guide.telegram": "Telegram AI Agent Guide (Arabic)",
+        "nav.guide.whatsapp": "WhatsApp + Claude Guide (Arabic)",
+        "nav.guide.all": "All free guides",
         "nav.contact": "Contact Us",
         
         // Hero Section
@@ -1012,6 +1029,10 @@ const translations = {
         "nav.services": "خدماتنا",
         "nav.projects": "مشاريعنا",
         "nav.testimonials": "آراء عملائنا",
+        "nav.knowledge": "مركز المعرفة",
+        "nav.guide.telegram": "دليل وكيل تيليجرام الذكي",
+        "nav.guide.whatsapp": "دليل ربط Claude بواتساب",
+        "nav.guide.all": "كل الأدلة المجانية",
         "nav.contact": "اتصل بنا",
         
         // Hero Section

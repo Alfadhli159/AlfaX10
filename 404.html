@@ -18,8 +18,10 @@
     <!-- Preload critical assets -->
     <link rel="preload" href="assets/logo-AldaX10.png" as="image" type="image/png" fetchpriority="high">
     
-    <!-- Stylesheet with media query for faster rendering -->
-    <link rel="stylesheet" href="styles.css" media="all">
+    <!-- Main stylesheet (minified) -->
+    <link rel="preload" href="assets/styles.min.css" as="style">
+    <link rel="stylesheet" href="assets/styles.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/styles.min.css"></noscript>
     
     <!-- Google Fonts - Optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,7 +116,11 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy">
+                    <picture>
+                        <source type="image/avif" srcset="/assets/images/logo-AldaX10.avif">
+                        <source type="image/webp" srcset="/assets/images/logo-AldaX10.webp">
+                        <img src="/assets/images/logo-AldaX10.webp" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy" decoding="async">
+                    </picture>
                     <span class="logo-text sr-only">
                         <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
@@ -147,8 +153,9 @@
         </div>
     </footer>
 
-    <!-- JavaScript - with defer attribute for better performance -->
-    <script src="scripts.js" defer></script>
+    <!-- JavaScript (minified, deferred) -->
+    <script src="assets/app.min.js" defer></script>
+    <script src="assets/app.defer.js" defer></script>
     
     <!-- Structured Data -->
     <script type="application/ld+json">

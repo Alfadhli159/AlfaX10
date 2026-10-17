@@ -1,7 +1,52 @@
+# syntax=apacheconf
+# Apache .htaccess configuration file
+# Note: VS Code may show PowerShell syntax errors which can be safely ignored
+
+<IfModule mod_deflate.c>
+  # Enable Gzip compression for common text-based files
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>
+
+<IfModule mod_brotli.c>
+  # Enable Brotli compression if available
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType application/font-woff "access plus 1 year"
+</IfModule>
+
+# Allow CORS for fonts and SVGs
+<IfModule mod_headers.c>
+  <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|svg)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Cache-Control fallback
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>
+
+# Custom error document
+ErrorDocument 404 /404.html
 # Ensure XML files are properly handled
 AddType application/xml .xml
 
-# Enable browser caching
+# Enable browser caching - all rules consolidated here
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 1 month"
@@ -10,6 +55,7 @@ AddType application/xml .xml
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/x-icon "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
@@ -71,24 +117,20 @@ AddType application/xml .xml
   Header append Vary User-Agent
 </IfModule>
 
-# Security headers
+# Security headers - consolidated all security-related headers here
 <IfModule mod_headers.c>
-  # Protect against XSS attacks
-  Header set X-XSS-Protection "1; mode=block"
+  # Security headers
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=()"
   
-  # Prevent MIME-type sniffing
-  Header set X-Content-Type-Options "nosniff"
+  # Content Security Policy (no longer in report-only mode)
+  Header set Content-Security-Policy "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'"
   
-  # Prevent clickjacking
-  Header set X-Frame-Options "SAMEORIGIN"
-  
-  # Content Security Policy
-  Header set Content-Security-Policy "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'"
-  
-  # Referrer Policy
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  
-  # Cache Control for static assets
+  # Cache Control for static assets (moved from duplicate section)
   <FilesMatch "\.(ico|pdf|jpg|jpeg|png|webp|gif|js|css|swf|svg|woff|woff2|ttf|otf|eot)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
@@ -102,11 +144,13 @@ AddType application/xml .xml
 # Custom error pages
 ErrorDocument 404 /404.html
 
-# Redirect non-www to www
+# Force HTTPS and www
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteCond %{HTTP_HOST} ^alfax10\.com [NC]
-  RewriteRule ^(.*)$ https://www.alfax10.com/$1 [L,R=301]
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  RewriteRule ^ https://www.%1%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 # Prevent directory browsing
@@ -119,7 +163,7 @@ Options -Indexes
 </Files>
 
 # Prevent access to specific files
-<FilesMatch "(\.yml|\.yaml|\.log|composer\.json|package\.json|README\.md)$">
+<FilesMatch "\.(yml|yaml|log|json|md)$">
   Order allow,deny
   Deny from all
 </FilesMatch>

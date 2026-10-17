@@ -1,23 +1,15 @@
-# AlfaX10 Website Robots.txt
-# Updated 2025-06-29
+# AlfaX10 Robots.txt — standard, simple configuration
+# Allow all crawlers to access the site. Specific disallows should only
+# be used for private or duplicate content. Keep this file minimal.
 
 User-agent: *
-Allow: /
-Disallow: /assets/
-Disallow: /Featured_Projects/
-Disallow: /copilot_prompts_alfax10.txt
+Disallow:
 
-# Don't index error pages
-Disallow: /404.html
+# Block sensitive or intentionally private files (add if needed):
+# Disallow: /secret/
 
-# Allow specific directories
-Allow: /assets/services/
-Allow: /assets/testimonials/
-Allow: /Featured_Projects/*.webp
-Allow: /Featured_Projects/*.png
+# Sitemap
+Sitemap: https://alfax10.com/sitemap.xml
 
-# Sitemap location
-Sitemap: https://www.alfax10.com/sitemap.xml
-
-# Crawl-delay directive for bots to prevent server overload
-Crawl-delay: 10
+# Note: 'Crawl-delay' and 'Host' directives are non-standard across major
+# crawlers (Google ignores them). Use server-side rate limiting if needed.

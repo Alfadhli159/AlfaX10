@@ -204,9 +204,9 @@ ul {
 #header .container {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Align items to center vertically */
+    align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
-    height: 150px; /* Increased to accommodate the larger logo */
+    height: 80px;
 }
 
 .logo {
@@ -905,13 +905,15 @@ html[dir="rtl"] .nav-links li:last-child {
 }
 
 /* Apply reverse order to ensure proper RTL menu sequence */
-html[dir="rtl"] .nav-links li:nth-child(1) { order: 6; }
-html[dir="rtl"] .nav-links li:nth-child(2) { order: 5; }
-html[dir="rtl"] .nav-links li:nth-child(3) { order: 4; }
-html[dir="rtl"] .nav-links li:nth-child(4) { order: 3; }
-html[dir="rtl"] .nav-links li:nth-child(5) { order: 2; }
-html[dir="rtl"] .nav-links li:nth-child(6) { order: 1; }
-html[dir="rtl"] .nav-links li:nth-child(7) { order: 0; }
+/* القائمة الآن 8 عناصر (أُضيف «مركز المعرفة» قبل «اتصل بنا»)، والمحدّد > يمنع تأثر عناصر القائمة المنسدلة */
+html[dir="rtl"] .nav-links > li:nth-child(1) { order: 7; }
+html[dir="rtl"] .nav-links > li:nth-child(2) { order: 6; }
+html[dir="rtl"] .nav-links > li:nth-child(3) { order: 5; }
+html[dir="rtl"] .nav-links > li:nth-child(4) { order: 4; }
+html[dir="rtl"] .nav-links > li:nth-child(5) { order: 3; }
+html[dir="rtl"] .nav-links > li:nth-child(6) { order: 2; }
+html[dir="rtl"] .nav-links > li:nth-child(7) { order: 1; }
+html[dir="rtl"] .nav-links > li:nth-child(8) { order: 0; }
 
 /* Apply reverse order to legal pages menu items in RTL */
 html[dir="rtl"] .legal-nav .nav-links li:nth-child(1) { order: 6; }
@@ -1198,12 +1200,12 @@ html[dir="rtl"] .nav-links .lang-switcher {
 }
 
 .logo-image {
-    height: 240px; /* Increased to 3x the original size (80px * 3 = 240px) */
+    height: 150px;
     width: auto;
     display: inline-block;
     vertical-align: middle;
     margin-right: var(--spacing-sm);
-    filter: drop-shadow(0 0 5px rgba(0, 191, 255, 0.5)); /* Add a subtle glow effect */
+    filter: drop-shadow(0 0 5px rgba(0, 191, 255, 0.5));
 }
 
 .footer-logo-image {
@@ -1228,7 +1230,7 @@ html[dir="rtl"] .nav-links .lang-switcher {
 }
     
 #header .container {
-        height: 200px; /* Increased height for mobile to fit larger logo */
+        height: 80px;
     }
 
 
@@ -1612,4 +1614,52 @@ html[dir="rtl"] .sitemap-links a:hover {
     .sitemap-content {
         grid-template-columns: 1fr;
     }
+}
+
+/* ===== مركز المعرفة: قائمة منسدلة بالأدلة (إنجليزي/عربي) ===== */
+.nav-links .has-dropdown { position: relative; }
+.nav-links .dropdown-toggle { white-space: nowrap; }
+@media (min-width: 769px) {
+    /* مع إضافة العنصر الثامن: نمنع التفاف الروابط ونقلّل الحشو قليلاً حتى تتسع القائمة */
+    .nav-links > li > a { white-space: nowrap; padding-left: 0.7rem; padding-right: 0.7rem; }
+    .nav-links > li > a.btn-contact { padding: 0.7rem 1.2rem !important; }
+}
+.nav-links .dropdown-toggle::after { content: ""; display: inline-block; margin-inline-start: 0.45rem; vertical-align: middle; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; }
+.nav-links .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 260px;
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background-color: var(--bg-dark);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    z-index: 1002;
+    flex-direction: column;
+}
+.nav-links .has-dropdown:hover > .dropdown-menu,
+.nav-links .has-dropdown:focus-within > .dropdown-menu,
+.nav-links .has-dropdown.open > .dropdown-menu { display: flex; }
+.nav-links .dropdown-menu li { margin: 0; order: 0; width: 100%; }
+.nav-links .dropdown-menu li a { display: block; padding: 0.6rem 1.2rem; white-space: nowrap; }
+html[dir="rtl"] .nav-links .dropdown-menu { left: auto; right: 0; text-align: right; flex-direction: column; }
+html[dir="rtl"] .nav-links .dropdown-menu li { margin: 0; }
+
+@media (max-width: 768px) {
+    .nav-links .dropdown-menu {
+        position: static;
+        min-width: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+        align-items: center;
+    }
+    .nav-links .dropdown-menu li a { padding: var(--spacing-sm) 0; white-space: normal; }
+    .nav-links .has-dropdown:hover > .dropdown-menu { display: none; }
+    .nav-links .has-dropdown.open > .dropdown-menu { display: flex; }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <!-- Set language based on stored preference right away -->
@@ -18,14 +18,14 @@
     <!-- Open Graph Meta Tags for social sharing -->
     <meta property="og:title" content="AlfaX10 - Mobile Apps, Websites & Custom Software Services">
     <meta property="og:description" content="We create innovative mobile apps, websites, and custom software solutions that transform businesses and enhance user experiences.">
-    <meta property="og:image" content="https://www.alfax10.com/assets/logo-AldaX10.png">
+    <meta property="og:image" content="https://www.alfax10.com/assets/images/logo-AldaX10.webp">
     <meta property="og:url" content="https://www.alfax10.com/">
     <meta property="og:type" content="website">
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AlfaX10 - Mobile Apps, Websites & Custom Software Services">
     <meta name="twitter:description" content="We create innovative mobile apps, websites, and custom software solutions that transform businesses.">
-    <meta name="twitter:image" content="https://www.alfax10.com/assets/logo-AldaX10.png">
+    <meta name="twitter:image" content="https://www.alfax10.com/assets/images/logo-AldaX10.webp">
     <!-- Canonical URL to prevent duplicate content issues -->
     <link rel="canonical" href="https://www.alfax10.com/">
     
@@ -48,7 +48,7 @@
         <div class="container">
             <div class="logo">
                 <a href="index.html">
-                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image" width="150" height="50">
+                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image" width="200" height="65">
                     <span class="logo-text sr-only">
                         <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
@@ -66,6 +66,15 @@
                     <li><a href="#services" data-i18n="nav.services">Services</a></li>
                     <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
                     <li><a href="#testimonials" data-i18n="nav.testimonials">Testimonials</a></li>
+                    <!-- مركز المعرفة: قائمة منسدلة بالأدلة المجانية (ثنائية اللغة عبر data-i18n) -->
+                    <li class="has-dropdown">
+                        <a href="guides/" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-i18n="nav.knowledge">Knowledge Center</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://claude.ai/artifact/ALZfrJWfkdugy1VpQurFT2" target="_blank" rel="noopener" data-i18n="nav.guide.telegram">Telegram AI Agent Guide</a></li>
+                            <li><a href="https://claude.ai/artifact/FX8HiSCewueDaJrcV2hdnN" target="_blank" rel="noopener" data-i18n="nav.guide.whatsapp">WhatsApp + Claude Guide</a></li>
+                            <li><a href="guides/" data-i18n="nav.guide.all">All free guides</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#contact" class="btn-contact" data-i18n="nav.contact">Contact Us</a></li>
                     <li class="lang-switcher"><button id="lang-toggle" aria-label="Switch Language">EN | AR</button></li>
                 </ul>
@@ -91,7 +100,9 @@
             </div>
             <div class="hero-image">
                 <!-- Hero image -->
-                <img src="assets/hero1.webp" alt="Hero Image showing digital transformation solutions" class="hero-img" width="600" height="400" loading="eager">
+                <picture>
+                    <img src="assets/hero1.webp" alt="Hero Image showing digital transformation solutions" class="hero-img" width="600" height="400" loading="eager" fetchpriority="high">
+                </picture>
             </div>
         </div>
     </section>
@@ -127,7 +138,9 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="assets/about.png" alt="About AlfaX10 Team and Mission" class="about-img" width="450" height="300" loading="lazy">
+                    <picture>
+                      <img src="assets/about.png" alt="About AlfaX10 Team and Mission" class="about-img" width="450" height="300" loading="lazy">
+                    </picture>
                 </div>
             </div>
         </div>
@@ -251,7 +264,7 @@
                 <!-- Project 1 -->
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="Featured_Projects/smart_app-card.webp" alt="Smart App AI Messaging Project" class="project-img" width="400" height="250" loading="lazy">
+                        <img src="Featured_Projects/smart_app-card.png" alt="Smart App AI Messaging Project" class="project-img" width="400" height="250" loading="lazy">
                         <div class="coming-soon-badge" data-i18n="projects.badge">Coming Soon</div>
                     </div>
                     <div class="project-info">
@@ -269,7 +282,7 @@ Smart App is an intelligent mobile tool that helps users generate personalized m
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="Featured_Projects/tahaqqaq-card.webp" alt="Tahaqqaq Identity Verification Platform" class="project-img" width="400" height="250" loading="lazy">
+                        <img src="Featured_Projects/tahaqqaq-card.png" alt="Tahaqqaq Identity Verification Platform" class="project-img" width="400" height="250" loading="lazy">
                         <div class="coming-soon-badge" data-i18n="projects.badge">Coming Soon</div>
                     </div>
                     <div class="project-info">
@@ -448,7 +461,11 @@ Smart App is an intelligent mobile tool that helps users generate personalized m
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/logo-AldaX10.png" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy">
+                    <picture>
+                        <source type="image/avif" srcset="assets/images/logo-AldaX10.avif">
+                        <source type="image/webp" srcset="assets/images/logo-AldaX10.webp">
+                        <img src="assets/images/logo-AldaX10.webp" alt="AlfaX10 Logo" class="logo-image footer-logo-image" width="120" height="40" loading="lazy">
+                    </picture>
                     <span class="logo-text sr-only">
                         <span class="accent-blue" data-i18n="logo.first">Alfa</span><span class="accent-yellow" data-i18n="logo.second">X10</span>
                     </span>
@@ -510,7 +527,7 @@ Smart App is an intelligent mobile tool that helps users generate personalized m
       "@type": "Organization",
       "name": "AlfaX10",
       "url": "https://www.alfax10.com",
-      "logo": "https://www.alfax10.com/assets/logo-AldaX10.png"
+      "logo": "https://www.alfax10.com/assets/images/logo-AldaX10.webp"
     }
     </script>
 </body>
